@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RoleAndPermissionSeeder::class,
+            CatalogSeeder::class,
         ]);
 
         // Create Super Admin user

@@ -1,5 +1,8 @@
 <?php
 
+use App\Domain\Catalog\Http\Controllers\CatalogController;
+use App\Domain\Catalog\Http\Controllers\CategoryController;
+use App\Domain\Catalog\Http\Controllers\WishlistController;
 use App\Domain\Identity\Http\Controllers\AuthController;
 use App\Domain\Identity\Http\Controllers\MfaController;
 use App\Domain\Identity\Http\Controllers\ProfileController;
@@ -75,7 +78,23 @@ Route::prefix('v1')->group(function () {
         Route::post('/social/{provider}/callback', [SocialAuthController::class, 'callback']);
     });
 
-    // Authenticated Endpoints
+    // -------------------------------------------------------------------------
+    // Phase 2: Catalog & Storefront (CAT-*)
+    // -------------------------------------------------------------------------
+    Route::prefix('catalog')->group(function () {
+        Route::get('/home', [CatalogController::class, 'home']);
+        Route::get('/courses', [CatalogController::class, 'index']);
+        Route::get('/courses/{slug}', [CatalogController::class, 'show']);
+        Route::get('/courses/{slug}/related', [CatalogController::class, 'related']);
+        Route::get('/search/autocomplete', [CatalogController::class, 'autocomplete']);
+
+        Route::get('/categories', [CategoryController::class, 'index']);
+        Route::get('/categories/{slug}', [CategoryController::class, 'show']);
+    });
+
+    // -------------------------------------------------------------------------
+    // Authenticated Endpoints (Sanctum)
+    // -------------------------------------------------------------------------
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/me', [AuthController::class, 'me']);
         Route::post('/auth/logout', [AuthController::class, 'logout']);
@@ -96,6 +115,13 @@ Route::prefix('v1')->group(function () {
             // Device Sessions
             Route::get('/sessions', [SessionController::class, 'index']);
             Route::delete('/sessions/{id}', [SessionController::class, 'destroy']);
+        });
+
+        // Wishlists
+        Route::prefix('wishlist')->group(function () {
+            Route::get('/', [WishlistController::class, 'index']);
+            Route::post('/{courseUlid}', [WishlistController::class, 'store']);
+            Route::delete('/{courseUlid}', [WishlistController::class, 'destroy']);
         });
     });
 });

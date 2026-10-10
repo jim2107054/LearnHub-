@@ -3,6 +3,10 @@
 use App\Domain\Catalog\Http\Controllers\CatalogController;
 use App\Domain\Catalog\Http\Controllers\CategoryController;
 use App\Domain\Catalog\Http\Controllers\WishlistController;
+use App\Domain\Commerce\Http\Controllers\CartController;
+use App\Domain\Commerce\Http\Controllers\CheckoutController;
+use App\Domain\Commerce\Http\Controllers\OrderController;
+use App\Domain\Commerce\Http\Controllers\WebhookController;
 use App\Domain\Identity\Http\Controllers\AuthController;
 use App\Domain\Identity\Http\Controllers\MfaController;
 use App\Domain\Identity\Http\Controllers\ProfileController;
@@ -97,6 +101,11 @@ Route::prefix('v1')->group(function () {
     // Media transcode callback webhook
     Route::post('/media/transcode/webhook', [MediaController::class, 'webhook']);
 
+    // Payment Gateway Webhooks
+    Route::prefix('commerce/webhooks')->group(function () {
+        Route::post('/stripe', [WebhookController::class, 'handleStripe']);
+    });
+
     // -------------------------------------------------------------------------
     // Authenticated Endpoints (Sanctum)
     // -------------------------------------------------------------------------
@@ -157,6 +166,25 @@ Route::prefix('v1')->group(function () {
             // Multipart Media Upload
             Route::post('/media/multipart/initiate', [MediaController::class, 'initiate']);
             Route::post('/media/multipart/complete', [MediaController::class, 'complete']);
+        });
+
+        // ---------------------------------------------------------------------
+        // Phase 4: Commerce (PAY-*)
+        // ---------------------------------------------------------------------
+        Route::prefix('cart')->group(function () {
+            Route::get('/', [CartController::class, 'index']);
+            Route::post('/items', [CartController::class, 'store']);
+            Route::delete('/items/{courseUlid}', [CartController::class, 'destroy']);
+            Route::post('/coupon', [CartController::class, 'applyCoupon']);
+            Route::delete('/coupon', [CartController::class, 'removeCoupon']);
+        });
+
+        Route::post('/checkout', [CheckoutController::class, 'checkout'])->middleware('idempotent');
+
+        Route::prefix('orders')->group(function () {
+            Route::get('/', [OrderController::class, 'index']);
+            Route::get('/{orderUlid}', [OrderController::class, 'show']);
+            Route::post('/{orderUlid}/refund', [OrderController::class, 'requestRefund'])->middleware('idempotent');
         });
     });
 });

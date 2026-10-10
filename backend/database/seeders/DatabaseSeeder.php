@@ -74,6 +74,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             CatalogSeeder::class,
+            ProductionCoursesSeeder::class,
         ]);
     }
 }

@@ -1,0 +1,276 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "LearnHub LMS Marketplace REST API",
+    "version": "1.0.0",
+    "description": "Production REST API for LearnHub online course marketplace and LMS platform. Serves learners, instructors, and platform administrators."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000/api/v1",
+      "description": "Local development environment"
+    },
+    {
+      "url": "https://api.learnhub.example.com/api/v1",
+      "description": "Production environment"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": ["System"],
+        "summary": "Basic health check",
+        "responses": {
+          "200": { "description": "System is healthy" },
+          "503": { "description": "Service degraded" }
+        }
+      }
+    },
+    "/health/deep": {
+      "get": {
+        "tags": ["System"],
+        "summary": "Deep subsystem probe (Database pooler latency, Redis, storage)",
+        "responses": {
+          "200": { "description": "All subsystems healthy" },
+          "503": { "description": "Subsystem failure" }
+        }
+      }
+    },
+    "/version": {
+      "get": {
+        "tags": ["System"],
+        "summary": "API version and documentation",
+        "responses": {
+          "200": { "description": "API metadata" }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register a new user account",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "email", "password", "password_confirmation"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string", "minLength": 8 },
+                  "password_confirmation": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "User created successfully" },
+          "422": { "description": "Validation failed" }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Authenticate user with email and password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string" },
+                  "device_name": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Authenticated token issued" },
+          "401": { "description": "Invalid credentials" },
+          "423": { "description": "Account locked due to consecutive failures" }
+        }
+      }
+    },
+    "/catalog/home": {
+      "get": {
+        "tags": ["Catalog"],
+        "summary": "Get storefront home rails (Featured, Trending, New, Categories)",
+        "responses": {
+          "200": { "description": "Storefront rails payload" }
+        }
+      }
+    },
+    "/catalog/courses": {
+      "get": {
+        "tags": ["Catalog"],
+        "summary": "Search & filter course catalog",
+        "parameters": [
+          { "name": "filter[category]", "in": "query", "schema": { "type": "string" } },
+          { "name": "filter[price]", "in": "query", "schema": { "type": "string", "enum": ["free", "paid"] } },
+          { "name": "filter[rating]", "in": "query", "schema": { "type": "number" } },
+          { "name": "sort", "in": "query", "schema": { "type": "string" } },
+          { "name": "page", "in": "query", "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Paginated course list" }
+        }
+      }
+    },
+    "/catalog/courses/{slug}": {
+      "get": {
+        "tags": ["Catalog"],
+        "summary": "Get course detail page (Schema.org JSON-LD, sections, preview lectures)",
+        "parameters": [
+          { "name": "slug", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Course detail data" },
+          "404": { "description": "Course not found" }
+        }
+      }
+    },
+    "/cart": {
+      "get": {
+        "tags": ["Commerce"],
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Get authenticated user active cart",
+        "responses": {
+          "200": { "description": "Cart items and subtotal/discount calculations" }
+        }
+      }
+    },
+    "/cart/items": {
+      "post": {
+        "tags": ["Commerce"],
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Add course to cart",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["course_id"],
+                "properties": {
+                  "course_id": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Course added to cart" }
+        }
+      }
+    },
+    "/checkout": {
+      "post": {
+        "tags": ["Commerce"],
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Create pending checkout order and payment intent (Idempotent)",
+        "responses": {
+          "200": { "description": "Order created with gateway client secret" }
+        }
+      }
+    },
+    "/learning/enrollments": {
+      "get": {
+        "tags": ["Learning"],
+        "security": [{ "BearerAuth": [] }],
+        "summary": "My Learning: List student enrolled courses",
+        "responses": {
+          "200": { "description": "List of active courses with progress percent" }
+        }
+      }
+    },
+    "/learning/courses/{courseUlid}/lectures/{lectureUlid}": {
+      "get": {
+        "tags": ["Learning"],
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Access lecture video player (Issues expiring signed HLS URL; limits streams to 3)",
+        "parameters": [
+          { "name": "courseUlid", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "lectureUlid", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Playback payload" },
+          "403": { "description": "Not enrolled" },
+          "429": { "description": "Concurrent streaming limit exceeded" }
+        }
+      }
+    },
+    "/learning/courses/{courseUlid}/lectures/{lectureUlid}/progress": {
+      "post": {
+        "tags": ["Learning"],
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Record video heartbeat progress (Evaluates 90% duration rule)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["last_position_seconds"],
+                "properties": {
+                  "last_position_seconds": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Progress saved and completion evaluated" }
+        }
+      }
+    },
+    "/certificates/verify/{code}": {
+      "get": {
+        "tags": ["Certificates"],
+        "summary": "Public certificate verification",
+        "parameters": [
+          { "name": "code", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Valid certificate details" },
+          "404": { "description": "Certificate code not found" }
+        }
+      }
+    },
+    "/instructor/earnings": {
+      "get": {
+        "tags": ["Finance"],
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Instructor earnings dashboard (Gross, net, pending hold, available)",
+        "responses": {
+          "200": { "description": "Instructor revenue summary" }
+        }
+      }
+    },
+    "/admin/analytics/kpis": {
+      "get": {
+        "tags": ["Admin"],
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Platform KPI dashboard (GMV, net revenue, active learners, refunds)",
+        "responses": {
+          "200": { "description": "Platform KPI metrics" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

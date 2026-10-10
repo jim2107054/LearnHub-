@@ -75,6 +75,59 @@ Route::prefix('v1')->group(function () {
         ], $allHealthy ? 200 : 503);
     });
 
+    // Deep Subsystem Health Check (Database pooler latency, Redis, Cache, Storage)
+    Route::get('/health/deep', function (Request $request) {
+        $start = microtime(true);
+        $dbStatus = 'ok';
+        $dbLatencyMs = 0;
+
+        try {
+            DB::select('SELECT 1');
+            $dbLatencyMs = round((microtime(true) - $start) * 1000, 2);
+        } catch (\Throwable $e) {
+            $dbStatus = 'error: '.$e->getMessage();
+        }
+
+        $redisStatus = 'ok';
+        $redisLatencyMs = 0;
+        try {
+            $rStart = microtime(true);
+            Redis::ping();
+            $redisLatencyMs = round((microtime(true) - $rStart) * 1000, 2);
+        } catch (\Throwable $e) {
+            $redisStatus = 'error: '.$e->getMessage();
+        }
+
+        $storageStatus = 'ok';
+        try {
+            \Illuminate\Support\Facades\Storage::disk('local')->put('.health_probe', 'probe');
+            \Illuminate\Support\Facades\Storage::disk('local')->delete('.health_probe');
+        } catch (\Throwable $e) {
+            $storageStatus = 'error: '.$e->getMessage();
+        }
+
+        $healthy = $dbStatus === 'ok' && $redisStatus === 'ok' && $storageStatus === 'ok';
+
+        return response()->json([
+            'status' => $healthy ? 'healthy' : 'unhealthy',
+            'timestamp' => now()->toIso8601String(),
+            'correlation_id' => $request->header('X-Correlation-ID'),
+            'checks' => [
+                'database_pooler' => [
+                    'status' => $dbStatus,
+                    'latency_ms' => $dbLatencyMs,
+                ],
+                'redis_cache' => [
+                    'status' => $redisStatus,
+                    'latency_ms' => $redisLatencyMs,
+                ],
+                'storage_disk' => [
+                    'status' => $storageStatus,
+                ],
+            ],
+        ], $healthy ? 200 : 503);
+    });
+
     Route::get('/version', function (Request $request) {
         return response()->json([
             'data' => [
@@ -158,6 +211,9 @@ Route::prefix('v1')->group(function () {
             // Device Sessions
             Route::get('/sessions', [SessionController::class, 'index']);
             Route::delete('/sessions/{id}', [SessionController::class, 'destroy']);
+
+            // GDPR Data Portability (SRS 7.2)
+            Route::post('/export-data', [ProfileController::class, 'exportData']);
         });
 
         // Wishlists

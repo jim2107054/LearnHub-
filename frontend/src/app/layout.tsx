@@ -5,6 +5,8 @@ import { RootProvider } from '@/components/providers/root-provider';
 import { Navbar } from '@/components/shared/navbar';
 import { Footer } from '@/components/shared/footer';
 
+import { CookieConsentBanner } from '@/components/shared/cookie-consent-banner';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -24,6 +26,7 @@ export default function RootLayout({
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
+          <CookieConsentBanner />
         </RootProvider>
       </body>
     </html>

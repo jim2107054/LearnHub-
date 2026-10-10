@@ -101,13 +101,13 @@ function CoursesListingContent() {
 
         const res = await apiClient<Course[]>(`/catalog/courses?${queryParams.toString()}`);
         setCourses(res.data || []);
-        if (res.meta?.pagination) {
-          setTotalPages(res.meta.pagination.last_page);
-          setTotalCourses(res.meta.pagination.total);
-        } else {
-          setTotalCourses(res.data?.length || 0);
-        }
-      } catch {
+        const meta = res.meta as any;
+        const lastPage = meta?.pagination?.last_page || meta?.last_page || 1;
+        const total = meta?.pagination?.total || meta?.total || res.data?.length || 0;
+        setTotalPages(lastPage);
+        setTotalCourses(total);
+      } catch (err) {
+        console.error('Failed to fetch courses:', err);
         setCourses([]);
       } finally {
         setIsLoading(false);

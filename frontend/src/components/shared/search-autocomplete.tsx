@@ -32,8 +32,11 @@ export function SearchAutocomplete() {
     const timer = setTimeout(async () => {
       setIsLoading(true);
       try {
-        const res = await apiClient<AutocompleteResult>(`/catalog/search/autocomplete?q=${encodeURIComponent(query)}`);
-        setResults(res.data);
+        const res = await apiClient<any>(`/catalog/search/autocomplete?q=${encodeURIComponent(query)}`);
+        const data = Array.isArray(res?.data)
+          ? { courses: res.data, categories: [] }
+          : res?.data || { courses: [], categories: [] };
+        setResults(data);
         setIsOpen(true);
       } catch {
         // Silently fail autocomplete suggestions

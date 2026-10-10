@@ -6,43 +6,46 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
 const CATEGORIES = [
-  { name: 'Software Development', slug: 'software-development', count: '1,420 courses' },
-  { name: 'Cloud & DevOps', slug: 'cloud-and-devops', count: '890 courses' },
-  { name: 'Data & AI', slug: 'data-and-ai', count: '650 courses' },
+  { name: 'Development', slug: 'development', count: '1,420 courses' },
+  { name: 'Cloud & DevOps', slug: 'cloud-devops', count: '890 courses' },
+  { name: 'AI & Machine Learning', slug: 'ai-machine-learning', count: '650 courses' },
   { name: 'Cybersecurity', slug: 'cybersecurity', count: '410 courses' },
-  { name: 'Design & UI/UX', slug: 'design', count: '520 courses' },
-  { name: 'Business Leadership', slug: 'business', count: '780 courses' },
+  { name: 'UI/UX & Design', slug: 'design', count: '520 courses' },
+  { name: 'Mobile Development', slug: 'mobile-development', count: '780 courses' },
 ];
 
 const FEATURED_COURSES = [
   {
     id: '1',
-    title: 'Distributed Systems & Microservices Architecture',
-    instructor: 'Alex Mercer',
+    slug: 'full-stack-laravel-nextjs-masterclass',
+    title: 'Full-Stack Laravel & Next.js Masterclass: Architecture & Best Practices',
+    instructor: 'Alexandre Dubois',
     level: 'Advanced',
     rating: 4.9,
-    reviews: 1240,
+    reviews: 840,
     price: '$79.99',
     badge: 'Bestseller',
   },
   {
     id: '2',
-    title: 'Fullstack Next.js 15 & Laravel 12 Enterprise Architecture',
-    instructor: 'Elena Rostova',
+    slug: 'ai-engineering-llm-rag-systems',
+    title: 'Practical AI Engineering: Building Production RAG Systems & Autonomous Agents',
+    instructor: 'Dr. Marcus Chen',
     level: 'Intermediate',
-    rating: 4.8,
-    reviews: 860,
-    price: '$59.99',
+    rating: 4.9,
+    reviews: 1250,
+    price: '$89.99',
     badge: 'Hot & New',
   },
   {
     id: '3',
-    title: 'Kubernetes Production Operations & GitOps Mastery',
-    instructor: 'David Chen',
+    slug: 'docker-kubernetes-devops-cloud-bootcamp',
+    title: 'Docker & Kubernetes Bootcamp: From Local Development to Production AWS Clusters',
+    instructor: 'Elena Rostova',
     level: 'All Levels',
-    rating: 4.9,
-    reviews: 2100,
-    price: '$89.99',
+    rating: 4.8,
+    reviews: 620,
+    price: '$69.99',
     badge: 'Popular',
   },
 ];
@@ -175,10 +178,12 @@ export default function HomePage() {
                     <span className="text-muted-foreground font-normal">({course.reviews} reviews)</span>
                   </div>
 
-                  <div className="flex items-center justify-between pt-3 border-t">
-                    <span className="font-bold text-lg">{course.price}</span>
-                    <Button size="sm">Enroll Now</Button>
-                  </div>
+                    <div className="flex items-center justify-between pt-3 border-t">
+                      <span className="font-bold text-lg">{course.price}</span>
+                      <Link href={`/courses/${course.slug}`}>
+                        <Button size="sm">Enroll Now</Button>
+                      </Link>
+                    </div>
                 </div>
               </CardContent>
             </Card>

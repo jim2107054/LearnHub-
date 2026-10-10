@@ -1,5 +1,10 @@
 <?php
 
+use App\Domain\Identity\Http\Controllers\AuthController;
+use App\Domain\Identity\Http\Controllers\MfaController;
+use App\Domain\Identity\Http\Controllers\ProfileController;
+use App\Domain\Identity\Http\Controllers\SessionController;
+use App\Domain\Identity\Http\Controllers\SocialAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
@@ -54,5 +59,43 @@ Route::prefix('v1')->group(function () {
                 'correlation_id' => $request->header('X-Correlation-ID'),
             ],
         ]);
+    });
+
+    // -------------------------------------------------------------------------
+    // Phase 1: Identity & Access (AUTH-*)
+    // -------------------------------------------------------------------------
+    Route::prefix('auth')->group(function () {
+        Route::post('/register', [AuthController::class, 'register']);
+        Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:10,1');
+        Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->middleware('throttle:5,1');
+        Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+
+        // Social Authentication
+        Route::get('/social/{provider}/redirect', [SocialAuthController::class, 'redirect']);
+        Route::post('/social/{provider}/callback', [SocialAuthController::class, 'callback']);
+    });
+
+    // Authenticated Endpoints
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/me', [AuthController::class, 'me']);
+        Route::post('/auth/logout', [AuthController::class, 'logout']);
+
+        // Multi-Factor Authentication (TOTP MFA)
+        Route::prefix('auth/mfa')->group(function () {
+            Route::post('/enable', [MfaController::class, 'enable']);
+            Route::post('/confirm', [MfaController::class, 'confirm']);
+            Route::post('/disable', [MfaController::class, 'disable']);
+        });
+
+        // Profile Management
+        Route::prefix('profile')->group(function () {
+            Route::get('/', [ProfileController::class, 'show']);
+            Route::patch('/', [ProfileController::class, 'update']);
+            Route::delete('/', [ProfileController::class, 'destroy']);
+
+            // Device Sessions
+            Route::get('/sessions', [SessionController::class, 'index']);
+            Route::delete('/sessions/{id}', [SessionController::class, 'destroy']);
+        });
     });
 });

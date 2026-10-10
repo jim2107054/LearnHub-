@@ -212,6 +212,7 @@ export default function CourseLearnPage({ params }: LearnPageProps) {
               <VideoPlayer
                 lectureId={currentLecture.id}
                 courseSlug={courseSlug}
+                videoSrc={(currentLecture as any).video_url || (currentLecture.preview_content as any)?.video_url || (currentLecture.content_payload as any)?.video_url}
                 onTimeUpdate={(time) => setCurrentVideoTime(time)}
                 onEnded={handleVideoEnded}
               />

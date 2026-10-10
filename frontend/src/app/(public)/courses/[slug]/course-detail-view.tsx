@@ -507,21 +507,37 @@ export function CourseDetailView({
 
                 {/* Primary CTA Buttons */}
                 <div className="space-y-3">
-                  <Button
-                    onClick={handleAddToCart}
-                    disabled={isAddingToCart}
-                    className="w-full text-base h-12 font-bold shadow-md"
-                  >
-                    {isAddingToCart ? 'Adding to cart...' : 'Add to cart'}
-                  </Button>
+                  {course.is_free || course.price_amount === 0 ? (
+                    <Link
+                      href={`/learn/${course.slug}/${course.sections?.[0]?.lectures?.[0]?.id || ''}`}
+                      className="block w-full"
+                    >
+                      <Button
+                        size="lg"
+                        className="w-full text-base h-12 font-bold shadow-md bg-emerald-600 hover:bg-emerald-700 text-white"
+                      >
+                        Enroll Now (Free)
+                      </Button>
+                    </Link>
+                  ) : (
+                    <>
+                      <Button
+                        onClick={handleAddToCart}
+                        disabled={isAddingToCart}
+                        className="w-full text-base h-12 font-bold shadow-md"
+                      >
+                        {isAddingToCart ? 'Adding to cart...' : 'Add to cart'}
+                      </Button>
 
-                  <Button
-                    onClick={handleBuyNow}
-                    variant="outline"
-                    className="w-full text-base h-12 font-semibold border-primary text-primary hover:bg-primary/10"
-                  >
-                    Buy now
-                  </Button>
+                      <Button
+                        onClick={handleBuyNow}
+                        variant="outline"
+                        className="w-full text-base h-12 font-semibold border-primary text-primary hover:bg-primary/10"
+                      >
+                        Buy now
+                      </Button>
+                    </>
+                  )}
                 </div>
 
                 <div className="text-center">
@@ -630,7 +646,7 @@ export function CourseDetailView({
                 controls
                 autoPlay
                 className="h-full w-full object-contain"
-                src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                src={(previewLecture as any).video_url || (previewLecture.preview_content as any)?.video_url || "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"}
               />
             </div>
           </div>

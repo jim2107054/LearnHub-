@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { CourseCard } from '@/components/shared/course-card';
 import { apiClient } from '@/lib/api-client';
-import { Course, Category, ApiSuccessResponse } from '@/types/api';
+import { Course, Category } from '@/types/api';
 
 const SORT_OPTIONS = [
   { value: 'most_popular', label: 'Most Popular' },
@@ -126,19 +126,19 @@ function CoursesListingContent() {
   ].filter(Boolean).length;
 
   return (
-    <div className="container py-8">
+    <div className="container py-8 md:py-12 bg-canvas min-h-screen text-ink dark:bg-[#0F0F10] dark:text-[#F5F5F5]">
       {/* Header and Search */}
-      <div className="mb-8 space-y-4">
+      <div className="mb-8 space-y-5">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-ink dark:text-white">
             {currentCategory
-              ? `Courses in ${categories.find((c) => c.slug === currentCategory)?.name || currentCategory}`
+              ? `${categories.find((c) => c.slug === currentCategory)?.name || currentCategory} Courses`
               : currentQuery
-              ? `Search results for "${currentQuery}"`
-              : 'Explore All Courses'}
+              ? `Results for "${currentQuery}"`
+              : 'All Courses'}
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            {totalCourses.toLocaleString()} results found to level up your career
+          <p className="text-sm font-light text-muted-foreground mt-1">
+            {totalCourses.toLocaleString()} courses found to expand your skills
           </p>
         </div>
 
@@ -151,12 +151,12 @@ function CoursesListingContent() {
             }}
             className="relative w-full sm:max-w-md"
           >
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Filter courses by keyword..."
-              className="pl-9 pr-4"
+              className="pl-11 pr-4 h-11 rounded-full bg-white dark:bg-[#1D1D1E] border border-hairline shadow-none"
             />
           </form>
 
@@ -165,7 +165,7 @@ function CoursesListingContent() {
               variant="outline"
               size="sm"
               onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
-              className="lg:hidden flex items-center gap-2"
+              className="lg:hidden flex items-center gap-2 h-10 rounded-btn"
             >
               <SlidersHorizontal className="h-4 w-4" />
               Filters {activeFilterCount > 0 && `(${activeFilterCount})`}
@@ -173,11 +173,11 @@ function CoursesListingContent() {
 
             {/* Sort Dropdown */}
             <div className="flex items-center gap-2 text-sm">
-              <span className="text-muted-foreground whitespace-nowrap hidden sm:inline">Sort by:</span>
+              <span className="text-muted-foreground font-light whitespace-nowrap hidden sm:inline">Sort by:</span>
               <select
                 value={currentSort}
                 onChange={(e) => updateFilter('sort', e.target.value)}
-                className="h-9 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                className="h-10 rounded-btn border border-hairline bg-white dark:bg-[#1D1D1E] px-3 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-black cursor-pointer shadow-none text-ink dark:text-white"
               >
                 {SORT_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>
@@ -191,48 +191,48 @@ function CoursesListingContent() {
 
         {/* Active Filters Chips */}
         {activeFilterCount > 0 && (
-          <div className="flex flex-wrap items-center gap-2 pt-2">
-            <span className="text-xs text-muted-foreground">Active filters:</span>
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            <span className="text-xs font-light text-muted-foreground">Active filters:</span>
             {currentCategory && (
-              <Badge variant="secondary" className="gap-1 text-xs">
+              <Badge variant="secondary" className="gap-1.5 text-xs py-1 px-3 rounded-full bg-white dark:bg-[#1D1D1E] border border-hairline font-medium">
                 Category: {categories.find((c) => c.slug === currentCategory)?.name || currentCategory}
-                <X className="h-3 w-3 cursor-pointer" onClick={() => updateFilter('category', null)} />
+                <X className="h-3 w-3 cursor-pointer hover:text-brand" onClick={() => updateFilter('category', null)} />
               </Badge>
             )}
             {currentLevel && (
-              <Badge variant="secondary" className="gap-1 text-xs capitalize">
+              <Badge variant="secondary" className="gap-1.5 text-xs py-1 px-3 rounded-full bg-white dark:bg-[#1D1D1E] border border-hairline capitalize font-medium">
                 Level: {currentLevel.replace('_', ' ')}
-                <X className="h-3 w-3 cursor-pointer" onClick={() => updateFilter('level', null)} />
+                <X className="h-3 w-3 cursor-pointer hover:text-brand" onClick={() => updateFilter('level', null)} />
               </Badge>
             )}
             {currentPrice && (
-              <Badge variant="secondary" className="gap-1 text-xs capitalize">
+              <Badge variant="secondary" className="gap-1.5 text-xs py-1 px-3 rounded-full bg-white dark:bg-[#1D1D1E] border border-hairline capitalize font-medium">
                 Price: {currentPrice}
-                <X className="h-3 w-3 cursor-pointer" onClick={() => updateFilter('price', null)} />
+                <X className="h-3 w-3 cursor-pointer hover:text-brand" onClick={() => updateFilter('price', null)} />
               </Badge>
             )}
             {currentRating && (
-              <Badge variant="secondary" className="gap-1 text-xs">
+              <Badge variant="secondary" className="gap-1.5 text-xs py-1 px-3 rounded-full bg-white dark:bg-[#1D1D1E] border border-hairline font-medium">
                 Rating: {currentRating}★ & up
-                <X className="h-3 w-3 cursor-pointer" onClick={() => updateFilter('rating', null)} />
+                <X className="h-3 w-3 cursor-pointer hover:text-brand" onClick={() => updateFilter('rating', null)} />
               </Badge>
             )}
             {currentQuery && (
-              <Badge variant="secondary" className="gap-1 text-xs">
+              <Badge variant="secondary" className="gap-1.5 text-xs py-1 px-3 rounded-full bg-white dark:bg-[#1D1D1E] border border-hairline font-medium">
                 Keyword: &quot;{currentQuery}&quot;
-                <X className="h-3 w-3 cursor-pointer" onClick={() => {
+                <X className="h-3 w-3 cursor-pointer hover:text-brand" onClick={() => {
                   setSearchInput('');
                   updateFilter('q', null);
                 }} />
               </Badge>
             )}
             <Button
-              variant="ghost"
+              variant="link"
               size="sm"
               onClick={clearAllFilters}
-              className="text-xs text-muted-foreground hover:text-foreground h-6 px-2"
+              className="text-xs text-brand font-bold"
             >
-              Reset all
+              Clear all
             </Button>
           </div>
         )}
@@ -242,8 +242,8 @@ function CoursesListingContent() {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Desktop Sidebar Filters */}
         <aside className="hidden lg:block space-y-6">
-          <div className="flex items-center justify-between pb-3 border-b">
-            <div className="flex items-center gap-2 font-semibold text-sm">
+          <div className="flex items-center justify-between pb-3 border-b border-hairline">
+            <div className="flex items-center gap-2 font-bold text-sm text-ink dark:text-white">
               <Filter className="h-4 w-4" />
               <span>Refine By</span>
             </div>
@@ -251,7 +251,7 @@ function CoursesListingContent() {
               <button
                 type="button"
                 onClick={clearAllFilters}
-                className="text-xs text-primary hover:underline font-medium"
+                className="text-xs text-brand hover:text-link-hover hover:underline font-bold"
               >
                 Clear all
               </button>
@@ -260,15 +260,17 @@ function CoursesListingContent() {
 
           {/* Categories */}
           <div className="space-y-2">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Categories
             </h4>
             <div className="space-y-1">
               <button
                 type="button"
                 onClick={() => updateFilter('category', null)}
-                className={`w-full text-left text-sm py-1.5 px-2 rounded-md transition ${
-                  !currentCategory ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:bg-muted'
+                className={`w-full text-left text-sm py-2 px-3 rounded-btn transition ${
+                  !currentCategory
+                    ? 'bg-surface font-bold text-brand dark:bg-white/10'
+                    : 'text-ink/80 dark:text-white/80 hover:bg-surface font-light'
                 }`}
               >
                 All Categories
@@ -278,10 +280,10 @@ function CoursesListingContent() {
                   key={cat.slug}
                   type="button"
                   onClick={() => updateFilter('category', cat.slug)}
-                  className={`w-full text-left text-sm py-1.5 px-2 rounded-md transition flex items-center justify-between ${
+                  className={`w-full text-left text-sm py-2 px-3 rounded-btn transition flex items-center justify-between ${
                     currentCategory === cat.slug
-                      ? 'bg-primary/10 text-primary font-medium'
-                      : 'text-muted-foreground hover:bg-muted'
+                      ? 'bg-surface font-bold text-brand dark:bg-white/10'
+                      : 'text-ink/80 dark:text-white/80 hover:bg-surface font-light'
                   }`}
                 >
                   <span className="truncate">{cat.name}</span>
@@ -294,8 +296,8 @@ function CoursesListingContent() {
           </div>
 
           {/* Price Filter */}
-          <div className="space-y-2">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <div className="space-y-2 pt-2 border-t border-hairline">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Price
             </h4>
             <div className="space-y-1">
@@ -306,10 +308,10 @@ function CoursesListingContent() {
                     key={p}
                     type="button"
                     onClick={() => updateFilter('price', p === 'all' ? null : p)}
-                    className={`w-full text-left text-sm py-1.5 px-2 rounded-md capitalize transition ${
+                    className={`w-full text-left text-sm py-2 px-3 rounded-btn capitalize transition ${
                       isSelected
-                        ? 'bg-primary/10 text-primary font-medium'
-                        : 'text-muted-foreground hover:bg-muted'
+                        ? 'bg-surface font-bold text-brand dark:bg-white/10'
+                        : 'text-ink/80 dark:text-white/80 hover:bg-surface font-light'
                     }`}
                   >
                     {p === 'all' ? 'All Prices' : p}
@@ -320,8 +322,8 @@ function CoursesListingContent() {
           </div>
 
           {/* Level Filter */}
-          <div className="space-y-2">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <div className="space-y-2 pt-2 border-t border-hairline">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Course Level
             </h4>
             <div className="space-y-1">
@@ -330,10 +332,10 @@ function CoursesListingContent() {
                   key={lvl.value}
                   type="button"
                   onClick={() => updateFilter('level', currentLevel === lvl.value ? null : lvl.value)}
-                  className={`w-full text-left text-sm py-1.5 px-2 rounded-md transition ${
+                  className={`w-full text-left text-sm py-2 px-3 rounded-btn transition ${
                     currentLevel === lvl.value
-                      ? 'bg-primary/10 text-primary font-medium'
-                      : 'text-muted-foreground hover:bg-muted'
+                      ? 'bg-surface font-bold text-brand dark:bg-white/10'
+                      : 'text-ink/80 dark:text-white/80 hover:bg-surface font-light'
                   }`}
                 >
                   {lvl.label}
@@ -343,8 +345,8 @@ function CoursesListingContent() {
           </div>
 
           {/* Rating Filter */}
-          <div className="space-y-2">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <div className="space-y-2 pt-2 border-t border-hairline">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Minimum Rating
             </h4>
             <div className="space-y-1">
@@ -353,10 +355,10 @@ function CoursesListingContent() {
                   key={r.value}
                   type="button"
                   onClick={() => updateFilter('rating', currentRating === r.value ? null : r.value)}
-                  className={`w-full text-left text-sm py-1.5 px-2 rounded-md transition ${
+                  className={`w-full text-left text-sm py-2 px-3 rounded-btn transition ${
                     currentRating === r.value
-                      ? 'bg-primary/10 text-primary font-medium'
-                      : 'text-muted-foreground hover:bg-muted'
+                      ? 'bg-surface font-bold text-brand dark:bg-white/10'
+                      : 'text-ink/80 dark:text-white/80 hover:bg-surface font-light'
                   }`}
                 >
                   {r.label}
@@ -371,16 +373,16 @@ function CoursesListingContent() {
           {isLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="animate-pulse space-y-3 rounded-xl border p-4">
-                  <div className="aspect-video bg-muted rounded-lg" />
-                  <div className="h-4 bg-muted rounded w-3/4" />
-                  <div className="h-3 bg-muted rounded w-1/2" />
-                  <div className="h-5 bg-muted rounded w-1/3" />
+                <div key={i} className="animate-pulse space-y-3 rounded-card border border-hairline bg-white p-5">
+                  <div className="aspect-video bg-surface rounded-xl" />
+                  <div className="h-4 bg-surface rounded w-3/4" />
+                  <div className="h-3 bg-surface rounded w-1/2" />
+                  <div className="h-5 bg-surface rounded w-1/3" />
                 </div>
               ))}
             </div>
           ) : courses.length > 0 ? (
-            <div className="space-y-8">
+            <div className="space-y-10">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {courses.map((course) => (
                   <CourseCard key={course.id} course={course} />
@@ -389,16 +391,17 @@ function CoursesListingContent() {
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className="flex items-center justify-center gap-2 pt-6 border-t">
+                <div className="flex items-center justify-center gap-2 pt-8 border-t border-hairline">
                   <Button
                     variant="outline"
                     size="sm"
                     disabled={currentPage <= 1}
                     onClick={() => updateFilter('page', (currentPage - 1).toString())}
+                    className="h-10 px-4 rounded-btn border-ink text-ink font-bold hover:bg-black/5"
                   >
                     <ChevronLeft className="h-4 w-4 mr-1" /> Previous
                   </Button>
-                  <span className="text-sm text-muted-foreground px-4">
+                  <span className="text-sm font-light text-muted-foreground px-4">
                     Page {currentPage} of {totalPages}
                   </span>
                   <Button
@@ -406,6 +409,7 @@ function CoursesListingContent() {
                     size="sm"
                     disabled={currentPage >= totalPages}
                     onClick={() => updateFilter('page', (currentPage + 1).toString())}
+                    className="h-10 px-4 rounded-btn border-ink text-ink font-bold hover:bg-black/5"
                   >
                     Next <ChevronRight className="h-4 w-4 ml-1" />
                   </Button>
@@ -413,17 +417,19 @@ function CoursesListingContent() {
               )}
             </div>
           ) : (
-            <div className="py-16 text-center border rounded-2xl bg-muted/20 p-8 space-y-4">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-muted">
+            <div className="py-20 text-center border border-hairline rounded-card bg-white dark:bg-[#1D1D1E] p-8 space-y-4">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-surface">
                 <Search className="h-6 w-6 text-muted-foreground" />
               </div>
-              <h3 className="text-lg font-semibold">No matching courses found</h3>
-              <p className="text-sm text-muted-foreground max-w-md mx-auto">
+              <h3 className="text-xl font-bold text-ink dark:text-white">No matching courses found</h3>
+              <p className="text-sm font-light text-muted-foreground max-w-md mx-auto">
                 We couldn&apos;t find any courses matching your current filters. Try searching with different keywords or clearing applied filters.
               </p>
-              <Button onClick={clearAllFilters} variant="outline" className="gap-2">
-                <RotateCcw className="h-4 w-4" /> Reset All Filters
-              </Button>
+              <div className="pt-2">
+                <Button onClick={clearAllFilters} variant="outline" className="gap-2 h-11 px-5 rounded-btn border-ink font-bold text-ink">
+                  <RotateCcw className="h-4 w-4" /> Reset All Filters
+                </Button>
+              </div>
             </div>
           )}
         </main>
@@ -434,7 +440,7 @@ function CoursesListingContent() {
 
 export default function CoursesPage() {
   return (
-    <Suspense fallback={<div className="container py-16 text-center">Loading courses...</div>}>
+    <Suspense fallback={<div className="container py-16 text-center text-muted-foreground font-light">Loading courses...</div>}>
       <CoursesListingContent />
     </Suspense>
   );

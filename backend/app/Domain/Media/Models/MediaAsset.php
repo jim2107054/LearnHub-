@@ -6,13 +6,13 @@ namespace App\Domain\Media\Models;
 
 use App\Domain\Catalog\Models\Lecture;
 use App\Domain\Identity\Models\User;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use App\Infrastructure\Support\Concerns\HasUlidField;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class MediaAsset extends Model
 {
-    use HasUlids;
+    use HasUlidField;
 
     protected $table = 'media_assets';
 

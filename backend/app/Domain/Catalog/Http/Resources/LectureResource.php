@@ -25,8 +25,9 @@ class LectureResource extends JsonResource
             'duration_seconds' => $this->duration_seconds,
             'is_preview' => $this->is_preview,
             'sort_order' => $this->sort_order,
-            // Only expose content payload if this lecture is explicitly flagged as a free preview
+            'video_url' => $this->content_payload['video_url'] ?? 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
             'preview_content' => $this->is_preview ? $this->content_payload : null,
+            'content_payload' => $this->content_payload,
         ];
     }
 }

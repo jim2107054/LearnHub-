@@ -51,78 +51,82 @@ export function CourseCard({ course, initialWishlisted = false }: CourseCardProp
     }
   };
 
+  const isBestseller = (course.enrollments_count || 0) > 100 || course.rating >= 4.8;
+
   return (
-    <Link href={`/courses/${course.slug}`} className="group block h-full">
-      <Card className="h-full overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-border/60 flex flex-col">
+    <Link href={`/courses/${course.slug}`} className="group block h-full select-none">
+      <Card className="h-full overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:border-[#1F1F2E]/30 bg-white dark:bg-[#1D1D1E] border border-hairline rounded-card flex flex-col shadow-none">
         {/* Course Thumbnail */}
-        <div className="relative aspect-video w-full overflow-hidden bg-muted">
+        <div className="relative aspect-video w-full overflow-hidden bg-surface">
           {course.thumbnail_url ? (
             <Image
               src={course.thumbnail_url}
               alt={course.title}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-primary/10 text-primary">
+            <div className="flex h-full w-full items-center justify-center bg-brand/10 text-brand">
               <BookOpen className="h-10 w-10 opacity-70" />
             </div>
           )}
 
           {/* Level Badge */}
-          <div className="absolute left-2.5 top-2.5">
-            <Badge variant="secondary" className="backdrop-blur-md bg-background/80 text-[11px] capitalize font-medium">
+          <div className="absolute left-3 top-3">
+            <Badge variant="secondary" className="backdrop-blur-sm bg-white/90 text-ink text-[11px] capitalize font-medium shadow-none">
               {course.level.replace('_', ' ')}
             </Badge>
           </div>
 
-          {/* Wishlist Button */}
+          {/* Udemy-style Circular Pill Wishlist Button (28px) */}
           <button
             type="button"
             onClick={handleWishlistToggle}
             disabled={isTogglingWishlist}
             aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
-            className="absolute right-2.5 top-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-background/80 backdrop-blur-md text-foreground transition-all duration-200 hover:scale-110 hover:bg-background"
+            className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-ink shadow-udemy-sm transition-all duration-150 hover:bg-white hover:scale-110 active:bg-btn-active active:text-white"
           >
             <Heart
-              className={`h-4 w-4 transition-colors ${
-                isWishlisted ? 'fill-red-500 text-red-500' : 'text-muted-foreground hover:text-red-500'
+              className={`h-3.5 w-3.5 transition-colors ${
+                isWishlisted ? 'fill-red-500 text-red-500' : 'text-ink hover:text-red-500'
               }`}
             />
           </button>
         </div>
 
         {/* Course Info */}
-        <CardContent className="p-4 flex-1 flex flex-col justify-between space-y-3">
+        <CardContent className="p-5 flex-1 flex flex-col justify-between space-y-3">
           <div className="space-y-1.5">
-            <h3 className="font-semibold text-base leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+            <h3 className="font-bold text-base leading-snug line-clamp-2 text-ink dark:text-white group-hover:text-brand transition-colors">
               {course.title}
             </h3>
 
             {course.instructor?.name && (
-              <p className="text-xs text-muted-foreground line-clamp-1">
+              <p className="text-xs font-light text-muted-foreground line-clamp-1">
                 {course.instructor.name}
               </p>
             )}
 
-            {/* Ratings & Reviews */}
-            <div className="flex items-center gap-1.5 text-xs">
-              <span className="font-bold text-amber-500">{course.rating.toFixed(1)}</span>
-              <div className="flex text-amber-500">
+            {/* Ratings & Reviews (Udemy golden star styling) */}
+            <div className="flex items-center gap-1.5 text-xs pt-0.5">
+              <span className="font-bold text-[#B4690E] dark:text-[#E59819]">{course.rating.toFixed(1)}</span>
+              <div className="flex text-[#B4690E] dark:text-[#E59819]">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
                     className={`h-3 w-3 ${
-                      i < Math.floor(course.rating) ? 'fill-current' : 'text-muted/60'
+                      i < Math.floor(course.rating) ? 'fill-current' : 'text-neutral-300 dark:text-neutral-600'
                     }`}
                   />
                 ))}
               </div>
-              <span className="text-muted-foreground">({course.reviews_count.toLocaleString()})</span>
+              <span className="text-muted-foreground font-light text-[11px]">
+                ({course.reviews_count.toLocaleString()})
+              </span>
             </div>
 
             {/* Meta stats */}
-            <div className="flex items-center gap-3 text-[11px] text-muted-foreground pt-1">
+            <div className="flex items-center gap-3 text-[11px] font-light text-muted-foreground pt-1">
               <div className="flex items-center gap-1">
                 <Clock className="h-3 w-3" />
                 <span>{formatDuration(course.total_duration_seconds)}</span>
@@ -134,16 +138,16 @@ export function CourseCard({ course, initialWishlisted = false }: CourseCardProp
             </div>
           </div>
 
-          {/* Pricing */}
-          <div className="pt-2 border-t border-border/50 flex items-center justify-between">
+          {/* Pricing & Badges */}
+          <div className="pt-2 border-t border-hairline flex items-center justify-between">
             <div className="flex items-baseline gap-1.5">
-              <span className="text-lg font-bold text-foreground">
+              <span className="text-lg font-bold text-ink dark:text-white">
                 {formatPrice(course.price_amount, course.price_currency)}
               </span>
             </div>
-            {course.enrollments_count > 100 && (
-              <Badge variant="outline" className="text-[10px] bg-primary/5 text-primary border-primary/20">
-                Popular
+            {isBestseller && (
+              <Badge variant="bestseller" className="text-[10px] uppercase tracking-wider py-0.5 px-2">
+                Bestseller
               </Badge>
             )}
           </div>

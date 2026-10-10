@@ -4,57 +4,99 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Udemy Light Canvas & Ink System */
+    --background: 240 7% 97.5%; /* #F8F8F9 */
+    --foreground: 240 20% 15.3%; /* #1F1F2E */
+    --card: 0 0% 100%; /* #FFFFFF */
+    --card-foreground: 240 20% 15.3%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 262.1 83.3% 57.8%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --popover-foreground: 240 20% 15.3%;
+    --primary: 246 58% 56%; /* #5B4FCF Brand Accent */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 93.7%; /* #EFEFEF Secondary Surface */
+    --secondary-foreground: 240 20% 15.3%;
+    --muted: 0 0% 93.7%; /* #EFEFEF */
+    --muted-foreground: 0 0% 33.7%; /* #565656 */
+    --accent: 0 0% 93.7%;
+    --accent-foreground: 240 20% 15.3%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 262.1 83.3% 57.8%;
-    --radius: 0.75rem;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 93.7%; /* #EFEFEF Card / hairline border */
+    --input: 0 0% 93.7%; /* #EFEFEF Input background */
+    --ring: 0 0% 0%; /* Solid 2px Black Focus Ring */
+    --radius: 0.5rem; /* 8px default {rounded.xs} */
   }
 
   .dark {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
-    --card: 224 71% 6%;
-    --card-foreground: 213 31% 91%;
-    --popover: 224 71% 6%;
-    --popover-foreground: 213 31% 91%;
-    --primary: 263.4 70% 50.4%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 215 27.9% 16.9%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
-    --accent: 215 27.9% 16.9%;
-    --accent-foreground: 210 40% 98%;
+    --background: 240 3% 6%; /* #0F0F10 */
+    --foreground: 0 0% 96%; /* #F5F5F5 */
+    --card: 240 2% 11.5%; /* #1D1D1E */
+    --card-foreground: 0 0% 96%;
+    --popover: 240 2% 11.5%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 246 58% 65%; /* Adjusted vibrant accent for dark */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 2% 16.5%; /* #29292A */
+    --secondary-foreground: 0 0% 96%;
+    --muted: 240 2% 16.5%;
+    --muted-foreground: 0 0% 62%; /* #9E9E9E */
+    --accent: 240 2% 16.5%;
+    --accent-foreground: 0 0% 96%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 263.4 70% 50.4%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 1% 21%; /* #353536 */
+    --input: 240 1% 21%;
+    --ring: 0 0% 38.8%; /* #636363 */
   }
 }
 
 @layer base {
   * {
     @apply border-border;
+    letter-spacing: 0px;
   }
   body {
     @apply bg-background text-foreground;
+    font-weight: 300;
+    line-height: 1.6;
+    letter-spacing: 0px;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-foreground;
+    font-weight: 700;
+    letter-spacing: 0px;
+  }
+
+  /* Universal accessible focus outline: 2px solid #000000 */
+  :focus-visible {
+    outline: 2px solid #000000 !important;
+    outline-offset: 2px;
+  }
+}
+
+/* Udemy Design System Utility Classes */
+.udemy-focus {
+  outline: 2px solid #000000 !important;
+  outline-offset: 2px;
+}
+
+.udemy-card {
+  background-color: #FFFFFF;
+  border: 1px solid #EFEFEF;
+  border-radius: 24px;
+  padding: 24px;
+  transition: all 0.2s ease;
+}
+
+.udemy-card-sm {
+  background-color: #EFEFEF;
+  border-radius: 16px;
+  padding: 8px;
+}
+
+.udemy-btn-active:active {
+  background-color: #2C6415 !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(162, 192, 169, 0.5) !important;
 }

@@ -21,47 +21,53 @@ export function Navbar() {
   const isAdmin = user?.roles?.some((r) => r.name === 'admin' || r.name === 'super_admin');
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between gap-4">
+    <header className="sticky top-0 z-50 w-full border-b border-hairline bg-white/95 backdrop-blur dark:bg-[#0F0F10]/95 transition-colors">
+      <div className="container flex h-[72px] items-center justify-between gap-4 md:gap-6">
         {/* Brand */}
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold shadow-md">
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <div className="flex h-10 w-10 items-center justify-center rounded-btn bg-brand text-white font-bold transition-transform group-hover:scale-105">
               <BookOpen className="h-5 w-5" />
             </div>
-            <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-              LearnHub
+            <span className="text-2xl font-bold tracking-tight text-ink dark:text-white">
+              Learn<span className="text-brand">Hub</span>
             </span>
           </Link>
 
-          <Link href="/courses" className="hidden md:inline-flex text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          <Link
+            href="/courses"
+            className="hidden md:inline-flex text-sm font-medium text-ink/80 hover:text-link-hover hover:underline transition-colors"
+          >
             Explore
           </Link>
         </div>
 
         {/* Global Search Bar */}
-        <div className="flex-1 max-w-md hidden sm:block">
+        <div className="flex-1 max-w-lg hidden sm:block">
           <SearchAutocomplete />
         </div>
 
         {/* Actions & Navigation */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 md:gap-3">
           {isAuthenticated ? (
             <>
-              <Link href="/my-learning" className="hidden lg:inline-flex text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+              <Link
+                href="/my-learning"
+                className="hidden lg:inline-flex text-sm font-medium text-ink/80 hover:text-link-hover hover:underline transition-colors px-2"
+              >
                 My Learning
               </Link>
 
               {isInstructor ? (
                 <Link href="/instructor/courses">
-                  <Button variant="ghost" size="sm" className="hidden sm:inline-flex gap-1.5">
+                  <Button variant="ghost" size="sm" className="hidden sm:inline-flex gap-1.5 h-10">
                     <LayoutDashboard className="h-4 w-4" />
                     Studio
                   </Button>
                 </Link>
               ) : (
                 <Link href="/instructor/onboard">
-                  <Button variant="ghost" size="sm" className="hidden sm:inline-flex">
+                  <Button variant="ghost" size="sm" className="hidden sm:inline-flex h-10 text-sm">
                     Teach on LearnHub
                   </Button>
                 </Link>
@@ -69,7 +75,7 @@ export function Navbar() {
 
               {isAdmin && (
                 <Link href="/admin">
-                  <Button variant="outline" size="sm" className="hidden md:inline-flex text-xs">
+                  <Button variant="outline" size="sm" className="hidden md:inline-flex text-xs h-9">
                     Admin Console
                   </Button>
                 </Link>
@@ -77,7 +83,7 @@ export function Navbar() {
             </>
           ) : (
             <Link href="/instructor/onboard">
-              <Button variant="ghost" size="sm" className="hidden md:inline-flex">
+              <Button variant="ghost" size="sm" className="hidden md:inline-flex h-10 text-sm font-medium">
                 Teach on LearnHub
               </Button>
             </Link>
@@ -85,7 +91,12 @@ export function Navbar() {
 
           {/* Cart Icon */}
           <Link href="/cart">
-            <Button variant="ghost" size="icon" className="relative" aria-label="Shopping Cart">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="relative h-10 w-10 rounded-full hover:bg-surface text-ink dark:text-white"
+              aria-label="Shopping Cart"
+            >
               <ShoppingCart className="h-5 w-5" />
             </Button>
           </Link>
@@ -95,6 +106,7 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="icon"
+              className="h-10 w-10 rounded-full hover:bg-surface text-ink dark:text-white"
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
               aria-label="Toggle theme"
             >
@@ -106,24 +118,32 @@ export function Navbar() {
           {isAuthenticated ? (
             <div className="flex items-center gap-2">
               <Link href="/profile">
-                <Button variant="secondary" size="sm" className="gap-2">
+                <Button variant="secondary" size="sm" className="gap-2 h-10 rounded-btn">
                   <UserIcon className="h-4 w-4" />
                   <span className="hidden sm:inline max-w-[120px] truncate">{user?.name}</span>
                 </Button>
               </Link>
-              <Button variant="ghost" size="icon" onClick={() => logout()} aria-label="Log out">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-10 w-10 rounded-full"
+                onClick={() => logout()}
+                aria-label="Log out"
+              >
                 <LogOut className="h-4 w-4 text-muted-foreground" />
               </Button>
             </div>
           ) : (
             <div className="flex items-center gap-2">
               <Link href="/login">
-                <Button variant="ghost" size="sm">
+                <Button variant="outline" size="sm" className="h-10 px-4 text-sm font-bold border-ink text-ink hover:bg-black/5">
                   Log in
                 </Button>
               </Link>
               <Link href="/register">
-                <Button size="sm">Sign up</Button>
+                <Button variant="default" size="sm" className="h-10 px-4 text-sm font-bold bg-ink text-white hover:bg-ink/90">
+                  Sign up
+                </Button>
               </Link>
             </div>
           )}

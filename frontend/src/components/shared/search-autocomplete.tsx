@@ -81,7 +81,7 @@ export function SearchAutocomplete() {
     <div ref={containerRef} className="relative w-full max-w-md">
       <form onSubmit={handleSearchSubmit}>
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#565656]" />
           <Input
             type="search"
             value={query}
@@ -90,10 +90,10 @@ export function SearchAutocomplete() {
               if (results && query.length >= 2) setIsOpen(true);
             }}
             placeholder="Search for courses, skills, subjects..."
-            className="pl-9 pr-8 h-9 text-sm rounded-full bg-muted/40 focus:bg-background border-border"
+            className="pl-11 pr-10 h-11 md:h-12 text-sm rounded-full bg-[#EFEFEF] hover:bg-[#E8E8E9] focus:bg-white border-transparent text-[#1F1F2E]"
           />
           {isLoading && (
-            <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin text-muted-foreground" />
+            <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin text-[#565656]" />
           )}
         </div>
       </form>

@@ -27,6 +27,9 @@ class CourseDetailResource extends JsonResource
             'description' => $this->description,
             'level' => $this->level->value,
             'language' => $this->language,
+            'price_amount' => $this->price_amount,
+            'price_currency' => $this->price_currency,
+            'is_free' => $this->isFree(),
             'price' => [
                 'amount' => $this->price_amount,
                 'currency' => $this->price_currency,

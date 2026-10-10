@@ -16,6 +16,11 @@ class CourseReview extends Model
     use HasUlids;
     use SoftDeletes;
 
+    public function uniqueIds(): array
+    {
+        return ['ulid'];
+    }
+
     protected $table = 'course_reviews';
 
     protected $fillable = [

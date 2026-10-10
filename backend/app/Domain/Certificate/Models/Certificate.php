@@ -14,6 +14,11 @@ class Certificate extends Model
 {
     use HasUlids;
 
+    public function uniqueIds(): array
+    {
+        return ['ulid'];
+    }
+
     protected $table = 'certificates';
 
     protected $fillable = [

@@ -15,6 +15,11 @@ class OrderItem extends Model
 {
     use HasUlids;
 
+    public function uniqueIds(): array
+    {
+        return ['ulid'];
+    }
+
     protected $table = 'order_items';
 
     protected $fillable = [

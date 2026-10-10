@@ -76,64 +76,8 @@ export default function QuizRunnerPage({ params }: QuizProps) {
         setQuiz(res.data);
         setTimeRemainingSeconds(res.data.time_limit_minutes * 60);
       } catch {
-        // Fallback mock
-        const mock: QuizData = {
-          id: quizId,
-          title: 'Cloud Architecture & Reliability Assessment',
-          instructions: 'Answer all 4 questions. You need at least 80% to pass and earn your certificate credit.',
-          passing_score: 80,
-          time_limit_minutes: 10,
-          max_attempts: 3,
-          attempts_used: 1,
-          questions: [
-            {
-              id: 'q1',
-              text: 'Which database replication model provides zero read replica lag at the cost of slower write mutations?',
-              options: [
-                { id: 'opt_1', text: 'Asynchronous streaming replication' },
-                { id: 'opt_2', text: 'Synchronous replication with two-phase commit' },
-                { id: 'opt_3', text: 'Multi-master eventual consistency' },
-                { id: 'opt_4', text: 'Write-behind caching via Redis' },
-              ],
-              explanation: 'Synchronous replication ensures that a transaction is written to the replica before committing on primary.',
-            },
-            {
-              id: 'q2',
-              text: 'In high-availability setups, what mechanism prevents split-brain scenarios when a network partition occurs?',
-              options: [
-                { id: 'opt_5', text: 'Round-robin DNS routing' },
-                { id: 'opt_6', text: 'Quorum consensus voting (e.g. Raft / Paxos)' },
-                { id: 'opt_7', text: 'Sticky session cookie cookies' },
-                { id: 'opt_8', text: 'Stateless JWT validation' },
-              ],
-              explanation: 'Quorum consensus requires majority agreement (N/2 + 1) to elect leaders and accept writes.',
-            },
-            {
-              id: 'q3',
-              text: 'What HTTP status code is most appropriate when a rate limit is exceeded on an API gateway?',
-              options: [
-                { id: 'opt_9', text: '400 Bad Request' },
-                { id: 'opt_10', text: '403 Forbidden' },
-                { id: 'opt_11', text: '429 Too Many Requests' },
-                { id: 'opt_12', text: '503 Service Unavailable' },
-              ],
-              explanation: 'RFC 6585 designates 429 Too Many Requests for rate limiting.',
-            },
-            {
-              id: 'q4',
-              text: 'When generating signed HLS video streaming URLs, what is the best practice for token expiration?',
-              options: [
-                { id: 'opt_13', text: '1 year fixed expiration' },
-                { id: 'opt_14', text: 'Short-lived expiration (e.g. 2 to 4 hours) bound to user identity' },
-                { id: 'opt_15', text: 'Infinite expiration saved in localStorage' },
-                { id: 'opt_16', text: 'Static query params matching course ID' },
-              ],
-              explanation: 'Short-lived signed tokens mitigate unauthorized link sharing and enforce concurrent stream rules.',
-            },
-          ],
-        };
-        setQuiz(mock);
-        setTimeRemainingSeconds(mock.time_limit_minutes * 60);
+        setQuiz(null);
+        toast.error('Could not load quiz questions.');
       } finally {
         setIsLoading(false);
       }

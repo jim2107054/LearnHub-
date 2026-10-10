@@ -31,28 +31,20 @@ async function verifyCertificate(code: string): Promise<VerificationResult | nul
     const res = await fetch(`${API_BASE}/certificates/verify/${code}`, {
       next: { revalidate: 3600 },
     });
-    if (!res.ok) {
-      // Mock fallback for preview if not in seed DB
-      return {
-        code,
-        recipient_name: 'Jordan Miller',
-        course_title: 'Complete Cloud Architecture Masterclass',
-        instructor_name: 'Alex Johnson',
-        issued_at: '2026-03-28T14:00:00Z',
-        status: 'valid',
-      };
-    }
+    if (!res.ok) return null;
     const json = await res.json();
-    return json.data;
-  } catch {
+    const data = json.data;
+    if (!data) return null;
     return {
-      code,
-      recipient_name: 'Jordan Miller',
-      course_title: 'Complete Cloud Architecture Masterclass',
-      instructor_name: 'Alex Johnson',
-      issued_at: '2026-03-28T14:00:00Z',
-      status: 'valid',
+      code: data.certificate_code || data.code || code,
+      recipient_name: data.student_name || data.recipient_name || 'Learner',
+      course_title: data.course_title || 'Course',
+      instructor_name: data.instructor_name || 'Instructor',
+      issued_at: data.issued_at || new Date().toISOString(),
+      status: data.status || (data.is_valid ? 'valid' : 'revoked'),
     };
+  } catch {
+    return null;
   }
 }
 

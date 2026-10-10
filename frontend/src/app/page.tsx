@@ -1,56 +1,40 @@
 import React from 'react';
 import Link from 'next/link';
-import { Sparkles, ShieldCheck, Award, Clock, ArrowRight, Star, Users } from 'lucide-react';
+import { Sparkles, ShieldCheck, Award, Clock, ArrowRight, Users, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { CourseCard } from '@/components/shared/course-card';
+import { Course, Category } from '@/types/api';
 
-const CATEGORIES = [
-  { name: 'Development', slug: 'development', count: '1,420 courses' },
-  { name: 'Cloud & DevOps', slug: 'cloud-devops', count: '890 courses' },
-  { name: 'AI & Machine Learning', slug: 'ai-machine-learning', count: '650 courses' },
-  { name: 'Cybersecurity', slug: 'cybersecurity', count: '410 courses' },
-  { name: 'UI/UX & Design', slug: 'design', count: '520 courses' },
-  { name: 'Mobile Development', slug: 'mobile-development', count: '780 courses' },
-];
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
 
-const FEATURED_COURSES = [
-  {
-    id: '1',
-    slug: 'full-stack-laravel-nextjs-masterclass',
-    title: 'Full-Stack Laravel & Next.js Masterclass: Architecture & Best Practices',
-    instructor: 'Alexandre Dubois',
-    level: 'Advanced',
-    rating: 4.9,
-    reviews: 840,
-    price: '$79.99',
-    badge: 'Bestseller',
-  },
-  {
-    id: '2',
-    slug: 'ai-engineering-llm-rag-systems',
-    title: 'Practical AI Engineering: Building Production RAG Systems & Autonomous Agents',
-    instructor: 'Dr. Marcus Chen',
-    level: 'Intermediate',
-    rating: 4.9,
-    reviews: 1250,
-    price: '$89.99',
-    badge: 'Hot & New',
-  },
-  {
-    id: '3',
-    slug: 'docker-kubernetes-devops-cloud-bootcamp',
-    title: 'Docker & Kubernetes Bootcamp: From Local Development to Production AWS Clusters',
-    instructor: 'Elena Rostova',
-    level: 'All Levels',
-    rating: 4.8,
-    reviews: 620,
-    price: '$69.99',
-    badge: 'Popular',
-  },
-];
+async function getHomePageData(): Promise<{ courses: Course[]; categories: Category[] }> {
+  try {
+    const [coursesRes, catRes] = await Promise.all([
+      fetch(`${API_BASE}/catalog/courses?sort=most_popular&per_page=6`, {
+        next: { revalidate: 60 },
+      }),
+      fetch(`${API_BASE}/catalog/categories`, {
+        next: { revalidate: 300 },
+      }),
+    ]);
 
-export default function HomePage() {
+    const coursesJson = coursesRes.ok ? await coursesRes.json() : null;
+    const catJson = catRes.ok ? await catRes.json() : null;
+
+    return {
+      courses: coursesJson?.data || [],
+      categories: catJson?.data || [],
+    };
+  } catch (err) {
+    console.error('Failed to load homepage data:', err);
+    return { courses: [], categories: [] };
+  }
+}
+
+export default async function HomePage() {
+  const { courses, categories } = await getHomePageData();
+
   return (
     <div className="flex flex-col gap-16 pb-20">
       {/* Hero Section */}
@@ -126,12 +110,14 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {CATEGORIES.map((cat) => (
+          {categories.map((cat) => (
             <Link key={cat.slug} href={`/courses?category=${cat.slug}`}>
               <Card className="h-full hover:border-primary/50 hover:shadow-md transition-all cursor-pointer group">
                 <CardContent className="p-4 flex flex-col justify-between h-full">
                   <p className="font-semibold text-sm group-hover:text-primary transition-colors">{cat.name}</p>
-                  <p className="text-xs text-muted-foreground mt-2">{cat.count}</p>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    {cat.courses_count ? `${cat.courses_count} courses` : 'Explore'}
+                  </p>
                 </CardContent>
               </Card>
             </Link>
@@ -146,49 +132,23 @@ export default function HomePage() {
             <h2 className="text-2xl font-bold tracking-tight">Featured & Bestselling Courses</h2>
             <p className="text-sm text-muted-foreground">Highest-rated courses recommended by learners</p>
           </div>
-          <Link href="/courses?sort=-rating" className="text-sm font-semibold text-primary hover:underline flex items-center gap-1">
+          <Link href="/courses?sort=highest_rated" className="text-sm font-semibold text-primary hover:underline flex items-center gap-1">
             View ranking <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {FEATURED_COURSES.map((course) => (
-            <Card key={course.id} className="overflow-hidden hover:shadow-lg transition-all border flex flex-col justify-between">
-              <div className="aspect-video w-full bg-gradient-to-br from-purple-700 via-indigo-800 to-slate-900 flex items-center justify-center p-6 text-white text-center">
-                <span className="font-bold text-lg leading-snug">{course.title}</span>
-              </div>
-              <CardContent className="p-5 flex flex-col flex-1 justify-between">
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-2">
-                    <Badge variant="secondary" className="text-xs font-medium">
-                      {course.level}
-                    </Badge>
-                    <Badge variant="success" className="text-xs">
-                      {course.badge}
-                    </Badge>
-                  </div>
-                  <h3 className="font-semibold text-base mb-1 line-clamp-2">{course.title}</h3>
-                  <p className="text-xs text-muted-foreground mb-3">{course.instructor}</p>
-                </div>
-
-                <div>
-                  <div className="flex items-center gap-1.5 text-xs text-amber-500 font-bold mb-3">
-                    <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />
-                    <span>{course.rating}</span>
-                    <span className="text-muted-foreground font-normal">({course.reviews} reviews)</span>
-                  </div>
-
-                    <div className="flex items-center justify-between pt-3 border-t">
-                      <span className="font-bold text-lg">{course.price}</span>
-                      <Link href={`/courses/${course.slug}`}>
-                        <Button size="sm">Enroll Now</Button>
-                      </Link>
-                    </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        {courses.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {courses.slice(0, 6).map((course) => (
+              <CourseCard key={course.id} course={course} />
+            ))}
+          </div>
+        ) : (
+          <div className="py-16 text-center border rounded-2xl bg-muted/10 p-8 max-w-md mx-auto space-y-4">
+            <BookOpen className="h-10 w-10 text-muted-foreground mx-auto" />
+            <p className="text-sm text-muted-foreground">Loading courses from catalog...</p>
+          </div>
+        )}
       </section>
 
       {/* Instructor CTA Banner */}

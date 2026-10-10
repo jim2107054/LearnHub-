@@ -168,6 +168,8 @@ Route::prefix('v1')->group(function () {
 
         Route::get('/categories', [CategoryController::class, 'index']);
         Route::get('/categories/{slug}', [CategoryController::class, 'show']);
+
+        Route::get('/instructors/{username}', [CatalogController::class, 'instructorProfile']);
     });
 
     // Media transcode callback webhook

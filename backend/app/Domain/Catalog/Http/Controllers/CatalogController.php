@@ -222,4 +222,58 @@ class CatalogController extends Controller
             ],
         ]);
     }
+
+    /**
+     * Retrieve public instructor profile and their authored courses.
+     */
+    public function instructorProfile(string $username): JsonResponse
+    {
+        $term = trim(str_replace('-', ' ', $username));
+        $driver = Course::query()->getConnection()->getDriverName();
+        $like = $driver === 'pgsql' ? 'ilike' : 'like';
+
+        /** @var \App\Domain\Identity\Models\User|null $instructor */
+        $instructor = \App\Domain\Identity\Models\User::query()
+            ->where('ulid', $username)
+            ->orWhere('name', $like, $term)
+            ->orWhere('name', $like, "%{$term}%")
+            ->orWhere('email', $like, "%{$username}%")
+            ->first();
+
+        if (! $instructor) {
+            return response()->json([
+                'error' => [
+                    'code' => 'instructor_not_found',
+                    'message' => 'Instructor profile not found.',
+                ],
+            ], 404);
+        }
+
+        $courses = Course::query()
+            ->published()
+            ->with(['category', 'primaryInstructor'])
+            ->where('primary_instructor_id', $instructor->id)
+            ->orderByDesc('enrollments_count')
+            ->get();
+
+        $studentsCount = (int) $courses->sum('enrollments_count');
+        $reviewsCount = (int) $courses->sum('reviews_count');
+        $avgRating = $courses->count() > 0 ? round((float) $courses->avg('rating_cache'), 1) : 5.0;
+
+        return response()->json([
+            'data' => [
+                'id' => $instructor->ulid,
+                'name' => $instructor->name,
+                'avatar_url' => $instructor->avatar_url,
+                'headline' => $instructor->headline ?: 'Senior Instructor at LearnHub',
+                'bio' => $instructor->bio ?: 'Experienced software engineer and educator specializing in industry-grade software architectures.',
+                'rating' => $avgRating,
+                'reviews_count' => $reviewsCount,
+                'students_count' => $studentsCount,
+                'courses_count' => $courses->count(),
+                'courses' => CourseCardResource::collection($courses),
+            ],
+        ]);
+    }
 }
+

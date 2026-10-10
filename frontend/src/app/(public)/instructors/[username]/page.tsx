@@ -15,22 +15,9 @@ async function getInstructorProfile(username: string): Promise<InstructorProfile
     const res = await fetch(`${API_BASE}/catalog/instructors/${username}`, {
       next: { revalidate: 300 },
     });
-    if (!res.ok) {
-      // Mock fallback for preview if endpoint not seeded
-      return {
-        id: 'ins_1',
-        name: decodeURIComponent(username).replace('-', ' '),
-        headline: 'Senior Cloud Architect & Full-Stack Instructor',
-        bio: 'Passionate software engineer and tech educator with over 12 years of hands-on experience building distributed microservices and modern web applications. Author of multiple top-rated courses with over 150,000 students enrolled globally.',
-        rating: 4.8,
-        reviews_count: 24890,
-        students_count: 142000,
-        courses_count: 6,
-        courses: [],
-      };
-    }
+    if (!res.ok) return null;
     const json = await res.json();
-    return json.data;
+    return json.data || null;
   } catch {
     return null;
   }

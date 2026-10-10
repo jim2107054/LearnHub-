@@ -64,29 +64,8 @@ export default function AssignmentSubmissionPage({ params }: AssignmentProps) {
         const res = await apiClient<AssignmentData>(`/assignments/${assignmentId}`);
         setAssignment(res.data);
       } catch {
-        // Mock fallback for preview
-        setAssignment({
-          id: assignmentId,
-          title: 'Practical Project: Multi-Region High-Availability Architecture',
-          description:
-            'Design and document a complete multi-region database topology using PostgreSQL read replicas and Redis caching. Include your Terraform/Docker compose files and architectural diagram.',
-          rubric: [
-            'Database replication strategy and failover automation (30 pts)',
-            'Redis cache-aside pattern with TTL invalidation (25 pts)',
-            'Error handling and API gateway circuit breaking (25 pts)',
-            'Clean documentation and reproducible setup instructions (20 pts)',
-          ],
-          max_score: 100,
-          submission: {
-            id: 'sub_1',
-            submitted_at: '2026-03-24T16:00:00Z',
-            repo_url: 'https://github.com/student/cloud-ha-project',
-            notes: 'Implemented using Terraform and PostgreSQL 16 on Neon with pgpool-II.',
-            status: 'graded',
-            grade_score: 95,
-            instructor_feedback: 'Outstanding architecture diagram and failover test suite! Full credit awarded.',
-          },
-        });
+        setAssignment(null);
+        toast.error('Could not load assignment details.');
       } finally {
         setIsLoading(false);
       }

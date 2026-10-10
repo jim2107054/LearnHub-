@@ -16,6 +16,11 @@ class Enrollment extends Model
 {
     use HasUlids;
 
+    public function uniqueIds(): array
+    {
+        return ['ulid'];
+    }
+
     protected $table = 'enrollments';
 
     protected $fillable = [

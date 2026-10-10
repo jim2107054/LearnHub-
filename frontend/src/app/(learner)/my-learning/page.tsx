@@ -43,59 +43,7 @@ export default function MyLearningPage() {
         const res = await apiClient<Enrollment[]>('/learning/enrollments');
         setEnrollments(res.data || []);
       } catch {
-        // Mock fallback for preview
-        setEnrollments([
-          {
-            id: 'enr_1',
-            course_id: 'crs_1',
-            progress_percent: 65,
-            status: 'active',
-            last_lecture_id: 'lec_2',
-            enrolled_at: '2026-03-20T10:00:00Z',
-            course: {
-              id: 'crs_1',
-              title: 'Complete Cloud Architecture Masterclass',
-              slug: 'cloud-architecture-masterclass',
-              price_amount: 4999,
-              price_currency: 'USD',
-              is_free: false,
-              rating: 4.8,
-              reviews_count: 1420,
-              enrollments_count: 8900,
-              total_duration_seconds: 1950,
-              lectures_count: 38,
-              level: 'intermediate',
-              instructor: {
-                name: 'Alex Johnson',
-              },
-            },
-          },
-          {
-            id: 'enr_2',
-            course_id: 'crs_2',
-            progress_percent: 100,
-            status: 'completed',
-            last_lecture_id: 'lec_final',
-            enrolled_at: '2026-02-10T12:00:00Z',
-            course: {
-              id: 'crs_2',
-              title: 'Full-Stack Next.js 15 & Laravel 12 API Design',
-              slug: 'fullstack-nextjs-laravel',
-              price_amount: 5999,
-              price_currency: 'USD',
-              is_free: false,
-              rating: 4.9,
-              reviews_count: 3200,
-              enrollments_count: 12400,
-              total_duration_seconds: 7200,
-              lectures_count: 54,
-              level: 'advanced',
-              instructor: {
-                name: 'Sarah Connor',
-              },
-            },
-          },
-        ]);
+        setEnrollments([]);
       } finally {
         setIsLoading(false);
       }

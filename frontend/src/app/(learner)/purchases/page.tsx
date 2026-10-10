@@ -60,29 +60,7 @@ export default function PurchasesPage() {
         const res = await apiClient<OrderRecord[]>('/orders');
         setOrders(res.data || []);
       } catch {
-        // Mock fallback for preview
-        setOrders([
-          {
-            id: 'ord_918237',
-            reference: 'LH-ORD-2026-918237',
-            created_at: '2026-03-28T14:30:00Z',
-            total_amount: 4999,
-            currency: 'USD',
-            payment_method: 'Visa •••• 4242',
-            status: 'paid',
-            is_refund_eligible: true,
-            items: [
-              {
-                id: 'item_1',
-                course_id: 'crs_1',
-                course_title: 'Complete Cloud Architecture Masterclass',
-                course_slug: 'cloud-architecture-masterclass',
-                price_amount: 4999,
-                progress_percent: 4,
-              },
-            ],
-          },
-        ]);
+        setOrders([]);
       } finally {
         setIsLoading(false);
       }

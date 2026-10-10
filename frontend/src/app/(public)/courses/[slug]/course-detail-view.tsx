@@ -378,7 +378,7 @@ export function CourseDetailView({
                 </div>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Passionate educator and industry practitioner with over a decade of experience designing scalable distributed systems. Dedicated to helping thousands of students land engineering roles worldwide.
+                {course.instructor?.bio || 'Experienced software engineer and educator dedicated to industry-grade technical mastery.'}
               </p>
             </div>
           </section>

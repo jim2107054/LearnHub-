@@ -50,9 +50,11 @@ export interface Course {
   lectures_count: number;
   level: 'beginner' | 'intermediate' | 'advanced' | 'all_levels';
   instructor?: {
+    id?: string;
     name: string;
     avatar_url?: string | null;
     headline?: string | null;
+    bio?: string | null;
   };
   sections?: Section[];
 }

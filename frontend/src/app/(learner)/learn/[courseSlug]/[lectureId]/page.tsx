@@ -74,59 +74,8 @@ export default function CourseLearnPage({ params }: LearnPageProps) {
         const found = allLectures.find((l) => l.id === lectureId) || allLectures[0] || null;
         setCurrentLecture(found);
       } catch {
-        // Fallback for preview
-        const mockLectures: Lecture[] = [
-          {
-            id: 'lec_1',
-            title: 'Welcome and Architecture Overview',
-            lecture_type: 'video',
-            duration_seconds: 420,
-            is_free_preview: true,
-            sort_order: 1,
-          },
-          {
-            id: 'lec_2',
-            title: 'Domain-Driven Monoliths vs Microservices',
-            lecture_type: 'video',
-            duration_seconds: 930,
-            is_free_preview: true,
-            sort_order: 2,
-          },
-          {
-            id: 'lec_3',
-            title: 'Database Partitioning & Read Replicas',
-            lecture_type: 'article',
-            duration_seconds: 600,
-            is_free_preview: false,
-            sort_order: 3,
-          },
-        ];
-
-        setCourse({
-          id: 'crs_1',
-          title: 'Complete Cloud Architecture Masterclass',
-          slug: courseSlug,
-          price_amount: 4999,
-          price_currency: 'USD',
-          is_free: false,
-          rating: 4.8,
-          reviews_count: 1420,
-          enrollments_count: 8900,
-          total_duration_seconds: 1950,
-          lectures_count: 3,
-          level: 'intermediate',
-          sections: [
-            {
-              id: 'sec_1',
-              title: 'Section 1: Foundations',
-              sort_order: 1,
-              lectures: mockLectures,
-            },
-          ],
-        });
-
-        const active = mockLectures.find((l) => l.id === lectureId) || mockLectures[0];
-        setCurrentLecture(active);
+        setCourse(null);
+        toast.error('Unable to load course data');
       }
     }
 

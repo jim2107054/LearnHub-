@@ -16,6 +16,11 @@ class Order extends Model
 {
     use HasUlids;
 
+    public function uniqueIds(): array
+    {
+        return ['ulid'];
+    }
+
     protected $table = 'orders';
 
     protected $fillable = [

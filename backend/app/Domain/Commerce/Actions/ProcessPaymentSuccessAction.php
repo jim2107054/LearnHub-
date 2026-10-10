@@ -104,6 +104,23 @@ class ProcessPaymentSuccessAction
                         'description' => 'Instructor earnings for course #'.$item->course_id.' on Order #'.$order->order_number,
                         'created_at' => now(),
                     ]);
+
+                    \App\Domain\Finance\Models\InstructorEarning::create([
+                        'ulid' => (string) Str::ulid(),
+                        'instructor_id' => $item->instructor_id,
+                        'order_id' => $order->id,
+                        'order_item_id' => $item->id,
+                        'course_id' => $item->course_id,
+                        'gross_amount' => $item->price_amount,
+                        'platform_fee_amount' => $item->platform_fee_amount,
+                        'tax_withheld_amount' => 0,
+                        'net_earnings_amount' => $item->instructor_share_amount,
+                        'currency' => $order->currency,
+                        'revenue_share_percent' => $item->coupon_id ? 97 : 37,
+                        'source_type' => $item->coupon_id ? 'instructor_coupon' : 'platform_organic',
+                        'status' => 'pending_hold',
+                        'available_at' => now()->addDays(30),
+                    ]);
                 }
             }
 

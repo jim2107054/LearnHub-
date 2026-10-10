@@ -14,6 +14,10 @@ use App\Domain\Community\Http\Controllers\ModerationReportController;
 use App\Domain\Community\Http\Controllers\NotificationController;
 use App\Domain\Community\Http\Controllers\QaController;
 use App\Domain\Community\Http\Controllers\ReviewController;
+use App\Domain\Finance\Http\Controllers\AdminFinanceController;
+use App\Domain\Finance\Http\Controllers\EarningsController;
+use App\Domain\Finance\Http\Controllers\PayoutMethodController;
+use App\Domain\Finance\Http\Controllers\TaxProfileController;
 use App\Domain\Identity\Http\Controllers\AuthController;
 use App\Domain\Identity\Http\Controllers\MfaController;
 use App\Domain\Identity\Http\Controllers\ProfileController;
@@ -182,6 +186,16 @@ Route::prefix('v1')->group(function () {
             // Multipart Media Upload
             Route::post('/media/multipart/initiate', [MediaController::class, 'initiate']);
             Route::post('/media/multipart/complete', [MediaController::class, 'complete']);
+
+            // Phase 8: Instructor Earnings & Payouts (EAR-*)
+            Route::get('/earnings', [EarningsController::class, 'dashboard']);
+            Route::get('/earnings/history', [EarningsController::class, 'history']);
+            Route::get('/payout-methods', [PayoutMethodController::class, 'index']);
+            Route::post('/payout-methods', [PayoutMethodController::class, 'store']);
+            Route::post('/payout-methods/{ulid}/default', [PayoutMethodController::class, 'setDefault']);
+            Route::delete('/payout-methods/{ulid}', [PayoutMethodController::class, 'destroy']);
+            Route::get('/tax-profile', [TaxProfileController::class, 'show']);
+            Route::post('/tax-profile', [TaxProfileController::class, 'store']);
         });
 
         // ---------------------------------------------------------------------
@@ -265,6 +279,17 @@ Route::prefix('v1')->group(function () {
             Route::post('/read-all', [NotificationController::class, 'markAllRead']);
             Route::get('/preferences', [NotificationController::class, 'preferences']);
             Route::put('/preferences', [NotificationController::class, 'updatePreferences']);
+        });
+
+        // ---------------------------------------------------------------------
+        // Phase 8: Finance Admin Payouts & Holds (EAR-*)
+        // ---------------------------------------------------------------------
+        Route::prefix('admin/finance')->group(function () {
+            Route::get('/payout-batches', [AdminFinanceController::class, 'batches']);
+            Route::post('/payout-batches', [AdminFinanceController::class, 'generateBatch']);
+            Route::post('/payout-batches/{batchUlid}/approve', [AdminFinanceController::class, 'approveBatch']);
+            Route::post('/earnings/{earningUlid}/hold', [AdminFinanceController::class, 'holdEarning']);
+            Route::post('/earnings/{earningUlid}/release', [AdminFinanceController::class, 'releaseEarning']);
         });
     });
 });

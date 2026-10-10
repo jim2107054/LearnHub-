@@ -30,6 +30,7 @@ This repository is organized as a unified monorepo:
 - **Frontend Phase 4 — Learning Experience (`LRN-*`)**: My Learning dashboard with progress tracking and weekly goals, accessible custom HLS video player with speed control/keyboard shortcuts/10s progress heartbeat and concurrent stream limit modal (`LRN-12`), curriculum sidebar with auto-advance countdown, and timestamped study notes with Markdown export.
 - **Frontend Phase 5 — Assessments & Certificates (`ASM-*`, `CRT-*`)**: Timed quiz runner with autosave and scoring breakdown, assignment submission workflow with rubrics and instructor feedback, high-resolution verifiable completion certificate preview with PDF download and LinkedIn sharing, and public certificate verification portal (`/verify/[code]`).
 - **Frontend Phase 6 — Community & Notifications (`COM-*`, `NTF-*`)**: Verified student reviews with 10% progress eligibility gating (`BR-05`) and single instructor replies, Q&A discussion board with upvoting and best answer marking, notification center with unread count and granular preferences, and peer/instructor direct messaging.
+- **Frontend Phase 7 — Instructor Studio (`INS-*`, `EAR-*`, `ANL-*`)**: Instructor studio dashboard with KPIs, course creation wizard, curriculum builder with video transcode simulation, pre-publish validation checklist (`BR-03`), student retention and lecture drop-off heatmap (`ANL-03`), earnings reconciliation with 30-day refund hold reserve and W-9 tax profile, and 97% revenue share coupon manager.
 
 ---
 

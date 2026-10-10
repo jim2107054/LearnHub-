@@ -1,8 +1,10 @@
 <?php
 
+use App\Domain\Assessment\Http\Controllers\AssessmentController;
 use App\Domain\Catalog\Http\Controllers\CatalogController;
 use App\Domain\Catalog\Http\Controllers\CategoryController;
 use App\Domain\Catalog\Http\Controllers\WishlistController;
+use App\Domain\Certificate\Http\Controllers\CertificateController;
 use App\Domain\Commerce\Http\Controllers\CartController;
 use App\Domain\Commerce\Http\Controllers\CheckoutController;
 use App\Domain\Commerce\Http\Controllers\OrderController;
@@ -107,6 +109,9 @@ Route::prefix('v1')->group(function () {
         Route::post('/stripe', [WebhookController::class, 'handleStripe']);
     });
 
+    // Public Certificate Verification
+    Route::get('/certificates/verify/{code}', [CertificateController::class, 'verify']);
+
     // -------------------------------------------------------------------------
     // Authenticated Endpoints (Sanctum)
     // -------------------------------------------------------------------------
@@ -200,6 +205,20 @@ Route::prefix('v1')->group(function () {
             Route::get('/lectures/{lectureUlid}/notes', [LearningController::class, 'notes']);
             Route::post('/lectures/{lectureUlid}/notes', [LearningController::class, 'storeNote']);
             Route::delete('/notes/{noteUlid}', [LearningController::class, 'destroyNote']);
+        });
+
+        // ---------------------------------------------------------------------
+        // Phase 6: Assessments & Certificates (ASM-*, CRT-*)
+        // ---------------------------------------------------------------------
+        Route::prefix('assessment')->group(function () {
+            Route::post('/quizzes/{quizUlid}/start', [AssessmentController::class, 'startQuiz']);
+            Route::post('/quizzes/attempts/{attemptUlid}/submit', [AssessmentController::class, 'submitQuiz']);
+            Route::post('/assignments/{assignmentUlid}/submit', [AssessmentController::class, 'submitAssignment']);
+        });
+
+        Route::prefix('certificates')->group(function () {
+            Route::post('/courses/{courseUlid}/issue', [CertificateController::class, 'issue']);
+            Route::get('/{certificateUlid}', [CertificateController::class, 'show']);
         });
     });
 });

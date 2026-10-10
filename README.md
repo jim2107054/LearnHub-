@@ -11,6 +11,17 @@ This repository is organized as a unified monorepo:
 
 ---
 
+## Completed Phases
+- **Phase 0 — Project Setup & Architecture Foundation**: Monorepo, Docker Compose, clean exception handler, correlation IDs, security headers, money value object, fake drivers.
+- **Phase 1 — Identity & Access (`AUTH-*`)**: Registration, authentication, account lockout, TOTP MFA, device session management, profile, social auth.
+- **Phase 2 — Catalog & Search (`CAT-*`)**: Category hierarchy, course discovery, search filtering/sorting, schema.org JSON-LD SEO, wishlists.
+- **Phase 3 — Instructor Studio & Media (`INS-*`)**: Course builder, pre-publish validation checklist (`BR-03`), coupons, multipart upload initiation.
+- **Phase 4 — Commerce (`PAY-*`)**: Shopping cart, double-entry financial ledger (`ADR 003`), Stripe webhook handling, refunds.
+- **Phase 5 — Learning Experience (`LRN-*`)**: "My Learning", signed HLS streaming, 90% completion threshold rule, concurrent stream limiter (`LRN-12`), timestamped notes.
+- **Phase 6 — Assessments & Certificates (`ASM-*`, `CRT-*`)**: Timed quizzes, anti-cheating answer sanitization, auto-grading, assignment submissions, verifiable completion certificates (`CRT-YYYYMMDD-XXXXXXXX`).
+
+---
+
 ## Backend Quick Start (Local Development)
 
 ### 1. Requirements

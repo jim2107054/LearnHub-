@@ -23,6 +23,7 @@ This repository is organized as a unified monorepo:
 - **Phase 8 — Finance: Earnings & Payouts (`EAR-*`)**: Revenue share calculator (37% organic vs 97% coupon), 30-day refund hold period, instructor earnings dashboard & history, payout methods, W-9/W-8BEN tax profiles, scheduled monthly payout batches ($50 threshold), admin holds, and double-entry ledger balancing.
 - **Phase 9 — Admin, Moderation, Analytics (`ADM-*`, `ANL-*`)**: User management & audited impersonation, course publishing review queue, user reports queue, platform settings store & dynamic feature flags, DMCA takedowns & 3-strike copyright enforcement, immutable audit logging, privacy-consent event pipeline, instructor drop-off heatmap analytics, and platform KPI reporting.
 - **Phase 10 — Hardening & OpenAPI Specification**: OWASP ASVS L2 security headers, deep subsystem health probe (`/health/deep`), GDPR data portability package export, k6 load testing script (sub-500ms p95), Neon database restore runbook, and OpenAPI 3.1.0 specification committed to `docs/openapi.json`.
+- **Frontend Phase 0 — Foundation & Architecture**: Next.js 15+ App Router, React 19, TypeScript, Tailwind CSS with dark/light mode tokens, Radix UI primitives, typed API client with Sanctum CSRF & error envelope unwrapping, RootProvider, Navbar, Footer, and edge middleware.
 
 ---
 

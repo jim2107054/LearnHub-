@@ -13,6 +13,7 @@ use App\Domain\Identity\Http\Controllers\ProfileController;
 use App\Domain\Identity\Http\Controllers\SessionController;
 use App\Domain\Identity\Http\Controllers\SocialAuthController;
 use App\Domain\Instructor\Http\Controllers\InstructorController;
+use App\Domain\Learning\Http\Controllers\LearningController;
 use App\Domain\Media\Http\Controllers\MediaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -185,6 +186,20 @@ Route::prefix('v1')->group(function () {
             Route::get('/', [OrderController::class, 'index']);
             Route::get('/{orderUlid}', [OrderController::class, 'show']);
             Route::post('/{orderUlid}/refund', [OrderController::class, 'requestRefund'])->middleware('idempotent');
+        });
+
+        // ---------------------------------------------------------------------
+        // Phase 5: Learning Experience (LRN-*)
+        // ---------------------------------------------------------------------
+        Route::prefix('learning')->group(function () {
+            Route::get('/enrollments', [LearningController::class, 'enrollments']);
+            Route::get('/courses/{courseUlid}/lectures/{lectureUlid}', [LearningController::class, 'lecture']);
+            Route::post('/courses/{courseUlid}/lectures/{lectureUlid}/progress', [LearningController::class, 'progress']);
+
+            // Notes & Bookmarks
+            Route::get('/lectures/{lectureUlid}/notes', [LearningController::class, 'notes']);
+            Route::post('/lectures/{lectureUlid}/notes', [LearningController::class, 'storeNote']);
+            Route::delete('/notes/{noteUlid}', [LearningController::class, 'destroyNote']);
         });
     });
 });

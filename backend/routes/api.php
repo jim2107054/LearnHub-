@@ -9,6 +9,11 @@ use App\Domain\Commerce\Http\Controllers\CartController;
 use App\Domain\Commerce\Http\Controllers\CheckoutController;
 use App\Domain\Commerce\Http\Controllers\OrderController;
 use App\Domain\Commerce\Http\Controllers\WebhookController;
+use App\Domain\Community\Http\Controllers\DirectMessageController;
+use App\Domain\Community\Http\Controllers\ModerationReportController;
+use App\Domain\Community\Http\Controllers\NotificationController;
+use App\Domain\Community\Http\Controllers\QaController;
+use App\Domain\Community\Http\Controllers\ReviewController;
 use App\Domain\Identity\Http\Controllers\AuthController;
 use App\Domain\Identity\Http\Controllers\MfaController;
 use App\Domain\Identity\Http\Controllers\ProfileController;
@@ -111,6 +116,11 @@ Route::prefix('v1')->group(function () {
 
     // Public Certificate Verification
     Route::get('/certificates/verify/{code}', [CertificateController::class, 'verify']);
+
+    // Community: Public Reviews & Q&A
+    Route::get('/courses/{courseSlug}/reviews', [ReviewController::class, 'index']);
+    Route::get('/courses/{courseSlug}/qa', [QaController::class, 'questions']);
+    Route::get('/qa/questions/{questionUlid}/answers', [QaController::class, 'answers']);
 
     // -------------------------------------------------------------------------
     // Authenticated Endpoints (Sanctum)
@@ -219,6 +229,42 @@ Route::prefix('v1')->group(function () {
         Route::prefix('certificates')->group(function () {
             Route::post('/courses/{courseUlid}/issue', [CertificateController::class, 'issue']);
             Route::get('/{certificateUlid}', [CertificateController::class, 'show']);
+        });
+
+        // ---------------------------------------------------------------------
+        // Phase 7: Community & Notifications (COM-*, NTF-*)
+        // ---------------------------------------------------------------------
+        // Reviews
+        Route::post('/courses/{courseSlug}/reviews', [ReviewController::class, 'store']);
+        Route::delete('/reviews/{reviewUlid}', [ReviewController::class, 'destroy']);
+        Route::post('/reviews/{reviewUlid}/reply', [ReviewController::class, 'reply']);
+
+        // Q&A
+        Route::prefix('qa')->group(function () {
+            Route::post('/courses/{courseSlug}/questions', [QaController::class, 'storeQuestion']);
+            Route::post('/questions/{questionUlid}/answers', [QaController::class, 'storeAnswer']);
+            Route::post('/questions/{questionUlid}/upvote', [QaController::class, 'upvoteQuestion']);
+            Route::post('/answers/{answerUlid}/upvote', [QaController::class, 'upvoteAnswer']);
+            Route::post('/answers/{answerUlid}/best-answer', [QaController::class, 'markBestAnswer']);
+        });
+
+        // Moderation Flags / Reports
+        Route::post('/moderation/reports', [ModerationReportController::class, 'store']);
+
+        // Direct Messages
+        Route::prefix('messages')->group(function () {
+            Route::get('/', [DirectMessageController::class, 'index']);
+            Route::get('/{partnerUlid}', [DirectMessageController::class, 'conversation']);
+            Route::post('/{recipientUlid}', [DirectMessageController::class, 'store'])->middleware('throttle:30,1');
+        });
+
+        // Notifications & Preferences
+        Route::prefix('notifications')->group(function () {
+            Route::get('/', [NotificationController::class, 'index']);
+            Route::post('/{id}/read', [NotificationController::class, 'markRead']);
+            Route::post('/read-all', [NotificationController::class, 'markAllRead']);
+            Route::get('/preferences', [NotificationController::class, 'preferences']);
+            Route::put('/preferences', [NotificationController::class, 'updatePreferences']);
         });
     });
 });

@@ -19,6 +19,7 @@ This repository is organized as a unified monorepo:
 - **Phase 4 — Commerce (`PAY-*`)**: Shopping cart, double-entry financial ledger (`ADR 003`), Stripe webhook handling, refunds.
 - **Phase 5 — Learning Experience (`LRN-*`)**: "My Learning", signed HLS streaming, 90% completion threshold rule, concurrent stream limiter (`LRN-12`), timestamped notes.
 - **Phase 6 — Assessments & Certificates (`ASM-*`, `CRT-*`)**: Timed quizzes, anti-cheating answer sanitization, auto-grading, assignment submissions, verifiable completion certificates (`CRT-YYYYMMDD-XXXXXXXX`).
+- **Phase 7 — Community & Notifications (`COM-*`, `NTF-*`)**: Course reviews & rating distribution breakdown, single instructor review replies, Q&A discussion forums with upvoting & best answers, moderation flags, direct messages, and user notification preferences.
 
 ---
 

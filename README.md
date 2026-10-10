@@ -26,6 +26,7 @@ This repository is organized as a unified monorepo:
 - **Frontend Phase 0 — Foundation & Architecture**: Next.js 15+ App Router, React 19, TypeScript, Tailwind CSS with dark/light mode tokens, Radix UI primitives, typed API client with Sanctum CSRF & error envelope unwrapping, RootProvider, Navbar, Footer, and edge middleware.
 - **Frontend Phase 1 — Auth & Account (`AUTH-*`)**: Registration, login with 5-failure lockout handling, post-login redirection, TOTP MFA challenge & QR setup with recovery codes, forgot & reset password, email verification notice, profile management, active device sessions with revocation, and GDPR data portability export.
 - **Frontend Phase 2 — Storefront: Catalog, Search, Course Page (`CAT-*`)**: Instant debounced search autocomplete, full faceted course listing with URL-synced filters, category hub pages with subcategories, course detail page with Schema.org JSON-LD structured data, curriculum accordion with free preview modal, sticky purchase card with coupon application, 5-star rating breakdown, instructor public profile, and XML sitemap/robots.txt.
+- **Frontend Phase 3 — Commerce: Cart, Checkout, and Refunds (`PAY-*`)**: Shopping cart with coupon calculation, checkout with billing tax country and idempotent submission (`Idempotency-Key`), post-payment success page polling webhook enrollment status, purchase history with invoice download and 30-day/<10% progress refund modal (`BR-07`), gift course ordering and voucher redemption.
 
 ---
 

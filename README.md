@@ -29,6 +29,7 @@ This repository is organized as a unified monorepo:
 - **Frontend Phase 3 — Commerce: Cart, Checkout, and Refunds (`PAY-*`)**: Shopping cart with coupon calculation, checkout with billing tax country and idempotent submission (`Idempotency-Key`), post-payment success page polling webhook enrollment status, purchase history with invoice download and 30-day/<10% progress refund modal (`BR-07`), gift course ordering and voucher redemption.
 - **Frontend Phase 4 — Learning Experience (`LRN-*`)**: My Learning dashboard with progress tracking and weekly goals, accessible custom HLS video player with speed control/keyboard shortcuts/10s progress heartbeat and concurrent stream limit modal (`LRN-12`), curriculum sidebar with auto-advance countdown, and timestamped study notes with Markdown export.
 - **Frontend Phase 5 — Assessments & Certificates (`ASM-*`, `CRT-*`)**: Timed quiz runner with autosave and scoring breakdown, assignment submission workflow with rubrics and instructor feedback, high-resolution verifiable completion certificate preview with PDF download and LinkedIn sharing, and public certificate verification portal (`/verify/[code]`).
+- **Frontend Phase 6 — Community & Notifications (`COM-*`, `NTF-*`)**: Verified student reviews with 10% progress eligibility gating (`BR-05`) and single instructor replies, Q&A discussion board with upvoting and best answer marking, notification center with unread count and granular preferences, and peer/instructor direct messaging.
 
 ---
 

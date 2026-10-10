@@ -17,7 +17,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RoleAndPermissionSeeder::class,
-            CatalogSeeder::class,
         ]);
 
         // Create Super Admin user
@@ -72,5 +71,9 @@ class DatabaseSeeder extends Seeder
             ]
         );
         $learner->assignRole(UserRole::LEARNER->value);
+
+        $this->call([
+            CatalogSeeder::class,
+        ]);
     }
 }

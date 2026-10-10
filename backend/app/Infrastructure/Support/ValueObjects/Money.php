@@ -96,6 +96,11 @@ final readonly class Money implements JsonSerializable, Stringable
         return $this->amount / 100;
     }
 
+    public function format(): string
+    {
+        return (string) $this;
+    }
+
     private function ensureSameCurrency(self $other): void
     {
         if ($this->currency !== $other->currency) {

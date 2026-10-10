@@ -9,7 +9,7 @@ use App\Domain\Catalog\Enums\CourseStatus;
 use App\Domain\Identity\Models\User;
 use App\Infrastructure\Support\ValueObjects\Money;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use App\Infrastructure\Support\Concerns\HasUlidField;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -19,7 +19,7 @@ use Laravel\Scout\Searchable;
 
 class Course extends Model
 {
-    use HasUlids;
+    use HasUlidField;
     use Searchable;
     use SoftDeletes;
 

@@ -13,6 +13,16 @@ class Category extends Model
 {
     use HasUlids;
 
+    /**
+     * Get the columns that should receive a unique identifier.
+     *
+     * @return array<int, string>
+     */
+    public function uniqueIds(): array
+    {
+        return ['ulid'];
+    }
+
     protected $table = 'categories';
 
     protected $fillable = [

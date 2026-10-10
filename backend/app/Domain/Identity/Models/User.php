@@ -21,6 +21,8 @@ class User extends Authenticatable
 
     protected $table = 'users';
 
+    protected string $guard_name = 'web';
+
     protected $fillable = [
         'ulid',
         'name',

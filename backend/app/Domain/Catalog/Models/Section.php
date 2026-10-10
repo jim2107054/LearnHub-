@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Domain\Catalog\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use App\Infrastructure\Support\Concerns\HasUlidField;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Section extends Model
 {
-    use HasUlids;
+    use HasUlidField;
 
     protected $table = 'sections';
 

@@ -36,6 +36,7 @@ frontend/out/
 frontend/build/
 frontend/.env.local
 frontend/.env.production.local
+*.tsbuildinfo
 
 # Docker volumes
 postgres_data/

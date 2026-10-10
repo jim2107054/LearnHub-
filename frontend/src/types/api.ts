@@ -99,3 +99,55 @@ export interface Enrollment {
   last_lecture_id?: string | null;
   enrolled_at: string;
 }
+
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string | null;
+  icon?: string | null;
+  courses_count?: number;
+  parent_id?: string | null;
+  children?: Category[];
+}
+
+export interface Review {
+  id: string;
+  course_id: string;
+  user: {
+    id: string;
+    name: string;
+    avatar_url?: string | null;
+  };
+  rating: number;
+  comment: string;
+  created_at: string;
+  instructor_reply?: {
+    comment: string;
+    created_at: string;
+  } | null;
+}
+
+export interface RatingBreakdown {
+  average_rating: number;
+  total_reviews: number;
+  distribution: {
+    [star: number]: {
+      count: number;
+      percentage: number;
+    };
+  };
+}
+
+export interface InstructorProfile {
+  id: string;
+  name: string;
+  avatar_url?: string | null;
+  headline?: string | null;
+  bio?: string | null;
+  rating: number;
+  reviews_count: number;
+  students_count: number;
+  courses_count: number;
+  courses?: Course[];
+}

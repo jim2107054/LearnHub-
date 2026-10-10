@@ -2,11 +2,11 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Search, ShoppingCart, BookOpen, Sun, Moon, LogOut, User as UserIcon, LayoutDashboard } from 'lucide-react';
+import { ShoppingCart, BookOpen, Sun, Moon, LogOut, User as UserIcon, LayoutDashboard } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useAuth } from '@/lib/auth-context';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { SearchAutocomplete } from './search-autocomplete';
 
 export function Navbar() {
   const { theme, setTheme } = useTheme();
@@ -41,14 +41,7 @@ export function Navbar() {
 
         {/* Global Search Bar */}
         <div className="flex-1 max-w-md hidden sm:block">
-          <form action="/courses" method="GET" className="relative">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              name="q"
-              placeholder="Search for courses, technologies, instructors..."
-              className="pl-9 pr-4 w-full bg-muted/40 focus:bg-background transition-colors"
-            />
-          </form>
+          <SearchAutocomplete />
         </div>
 
         {/* Actions & Navigation */}

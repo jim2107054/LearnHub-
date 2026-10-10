@@ -27,7 +27,7 @@ export default function VerifyEmailPage() {
   };
 
   return (
-    <div className="container mx-auto flex min-h-[80vh] items-center justify-center px-4 py-12">
+    <div className="container flex min-h-[80vh] items-center justify-center py-12">
       <Card className="w-full max-w-md shadow-xl border-border/60 text-center">
         <CardHeader className="space-y-2">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">

@@ -76,7 +76,7 @@ export default function SubscriptionPricingPage() {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-16 max-w-6xl space-y-12">
+    <div className="container py-16 max-w-6xl space-y-12">
       {/* Page Header */}
       <div className="text-center space-y-4 max-w-2xl mx-auto">
         <Badge className="bg-primary/10 text-primary hover:bg-primary/20 text-xs font-semibold px-3 py-1">

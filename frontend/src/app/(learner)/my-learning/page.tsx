@@ -77,7 +77,7 @@ export default function MyLearningPage() {
   });
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-6xl">
+    <div className="container py-10 max-w-6xl">
       {/* Page Header */}
       <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>

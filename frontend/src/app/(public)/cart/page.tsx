@@ -120,7 +120,7 @@ export default function CartPage() {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-20 text-center space-y-4">
+      <div className="container py-20 text-center space-y-4">
         <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
         <p className="text-muted-foreground text-sm">Loading your cart...</p>
       </div>
@@ -130,7 +130,7 @@ export default function CartPage() {
   const items = cart?.items || [];
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-6xl">
+    <div className="container py-10 max-w-6xl">
       <div className="mb-8">
         <h1 className="text-3xl font-extrabold tracking-tight">Shopping Cart</h1>
         <p className="text-sm text-muted-foreground mt-1">

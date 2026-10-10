@@ -94,7 +94,7 @@ export default function NotificationsPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-4xl space-y-8">
+    <div className="container py-10 max-w-4xl space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-6">
         <div>

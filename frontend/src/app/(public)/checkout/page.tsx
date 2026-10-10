@@ -104,7 +104,7 @@ export default function CheckoutPage() {
 
   if (isLoadingCart) {
     return (
-      <div className="container mx-auto px-4 py-20 text-center space-y-4">
+      <div className="container py-20 text-center space-y-4">
         <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
         <p className="text-muted-foreground text-sm">Preparing secure checkout...</p>
       </div>
@@ -112,7 +112,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-5xl">
+    <div className="container py-10 max-w-5xl">
       <div className="mb-6">
         <Link href="/cart" className="inline-flex items-center text-xs text-muted-foreground hover:text-foreground transition gap-1 mb-2">
           <ArrowLeft className="h-3 w-3" /> Back to Cart

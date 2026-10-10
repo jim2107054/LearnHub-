@@ -41,7 +41,7 @@ export default function AffiliateDashboardPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-5xl space-y-8">
+    <div className="container py-10 max-w-5xl space-y-8">
       {/* Header */}
       <div>
         <div className="flex items-center gap-2">

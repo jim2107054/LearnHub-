@@ -12,7 +12,7 @@ export default function ErrorBoundary({
   reset: () => void;
 }) {
   return (
-    <div className="container mx-auto flex flex-col items-center justify-center min-h-[60vh] px-4 text-center">
+    <div className="container flex flex-col items-center justify-center min-h-[60vh] text-center">
       <div className="rounded-full bg-destructive/10 p-4 mb-4">
         <AlertTriangle className="h-10 w-10 text-destructive" />
       </div>

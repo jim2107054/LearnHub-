@@ -126,7 +126,7 @@ export default function AssignmentSubmissionPage({ params }: AssignmentProps) {
 
   if (isLoading || !assignment) {
     return (
-      <div className="container mx-auto px-4 py-20 text-center space-y-4">
+      <div className="container py-20 text-center space-y-4">
         <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
         <p className="text-sm text-muted-foreground">Loading assignment...</p>
       </div>
@@ -136,7 +136,7 @@ export default function AssignmentSubmissionPage({ params }: AssignmentProps) {
   const sub = assignment.submission;
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-4xl space-y-8">
+    <div className="container py-10 max-w-4xl space-y-8">
       <div>
         <Button asChild variant="ghost" size="sm" className="mb-2 text-xs gap-1">
           <Link href={`/learn/${courseSlug}`}>

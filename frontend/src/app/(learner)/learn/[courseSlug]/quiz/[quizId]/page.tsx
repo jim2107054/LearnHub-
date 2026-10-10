@@ -147,7 +147,7 @@ export default function QuizRunnerPage({ params }: QuizProps) {
 
   if (isLoading || !quiz) {
     return (
-      <div className="container mx-auto px-4 py-20 text-center space-y-4">
+      <div className="container py-20 text-center space-y-4">
         <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
         <p className="text-sm text-muted-foreground">Loading assessment...</p>
       </div>
@@ -157,7 +157,7 @@ export default function QuizRunnerPage({ params }: QuizProps) {
   // View: Results
   if (results) {
     return (
-      <div className="container mx-auto px-4 py-12 max-w-2xl">
+      <div className="container py-12 max-w-2xl">
         <Card className="border-border shadow-2xl text-center overflow-hidden">
           <div
             className={`h-2 ${results.passed ? 'bg-emerald-500' : 'bg-destructive'}`}
@@ -235,7 +235,7 @@ export default function QuizRunnerPage({ params }: QuizProps) {
   // View: Intro Before Starting
   if (!started) {
     return (
-      <div className="container mx-auto px-4 py-12 max-w-2xl">
+      <div className="container py-12 max-w-2xl">
         <Card className="border-border shadow-xl">
           <CardHeader className="space-y-2">
             <div className="inline-flex items-center gap-1.5 text-xs text-primary font-semibold">
@@ -288,7 +288,7 @@ export default function QuizRunnerPage({ params }: QuizProps) {
   const isLastQuestion = currentQuestionIndex === quiz.questions.length - 1;
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-3xl">
+    <div className="container py-8 max-w-3xl">
       {/* Top Bar with Timer */}
       <div className="flex items-center justify-between mb-6 border-b pb-4">
         <div>

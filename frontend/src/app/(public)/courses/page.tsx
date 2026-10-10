@@ -126,7 +126,7 @@ function CoursesListingContent() {
   ].filter(Boolean).length;
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container py-8">
       {/* Header and Search */}
       <div className="mb-8 space-y-4">
         <div>
@@ -434,7 +434,7 @@ function CoursesListingContent() {
 
 export default function CoursesPage() {
   return (
-    <Suspense fallback={<div className="container mx-auto px-4 py-16 text-center">Loading courses...</div>}>
+    <Suspense fallback={<div className="container py-16 text-center">Loading courses...</div>}>
       <CoursesListingContent />
     </Suspense>
   );

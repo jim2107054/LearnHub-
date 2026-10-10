@@ -50,7 +50,7 @@ function CheckoutSuccessContent() {
   }, [orderId]);
 
   return (
-    <div className="container mx-auto flex min-h-[80vh] items-center justify-center px-4 py-12">
+    <div className="container flex min-h-[80vh] items-center justify-center py-12">
       <Card className="w-full max-w-lg shadow-2xl border-border text-center overflow-hidden">
         <div className="h-2 bg-gradient-to-r from-emerald-500 via-primary to-purple-600" />
         <CardHeader className="space-y-3 pt-8">
@@ -122,7 +122,7 @@ function CheckoutSuccessContent() {
 
 export default function CheckoutSuccessPage() {
   return (
-    <Suspense fallback={<div className="container mx-auto px-4 py-20 text-center">Loading confirmation...</div>}>
+    <Suspense fallback={<div className="container py-20 text-center">Loading confirmation...</div>}>
       <CheckoutSuccessContent />
     </Suspense>
   );

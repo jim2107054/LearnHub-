@@ -64,7 +64,7 @@ export default function RedeemPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-lg">
+    <div className="container py-12 max-w-lg">
       <div className="text-center mb-8 space-y-2">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500">
           <Gift className="h-7 w-7" />

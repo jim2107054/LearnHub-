@@ -37,7 +37,7 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="container mx-auto flex min-h-[80vh] items-center justify-center px-4 py-12">
+    <div className="container flex min-h-[80vh] items-center justify-center py-12">
       <Card className="w-full max-w-md shadow-xl border-border/60">
         <CardHeader className="space-y-1 text-center">
           <CardTitle className="text-2xl font-bold tracking-tight">Reset password</CardTitle>

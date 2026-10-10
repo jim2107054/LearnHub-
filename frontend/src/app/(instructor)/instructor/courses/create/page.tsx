@@ -48,7 +48,7 @@ export default function CreateCourseWizard() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-2xl space-y-6">
+    <div className="container py-8 max-w-2xl space-y-6">
       <div>
         <Button asChild variant="ghost" size="sm" className="mb-2 text-xs gap-1">
           <Link href="/instructor">

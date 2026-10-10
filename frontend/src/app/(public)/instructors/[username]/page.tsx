@@ -52,7 +52,7 @@ export default async function InstructorPublicProfilePage({ params }: Instructor
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-5xl space-y-12">
+    <div className="container py-12 max-w-5xl space-y-12">
       {/* Top Profile Card */}
       <div className="flex flex-col md:flex-row gap-8 items-start border-b pb-12">
         <div className="relative h-32 w-32 md:h-40 md:w-40 rounded-full overflow-hidden bg-primary/10 border-4 border-background shadow-xl flex-shrink-0">

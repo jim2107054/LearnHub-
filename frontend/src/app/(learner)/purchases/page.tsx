@@ -131,7 +131,7 @@ export default function PurchasesPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-5xl">
+    <div className="container py-10 max-w-5xl">
       <div className="mb-8">
         <h1 className="text-3xl font-extrabold tracking-tight">Purchase History</h1>
         <p className="text-sm text-muted-foreground mt-1">

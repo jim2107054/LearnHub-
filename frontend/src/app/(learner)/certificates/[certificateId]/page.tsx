@@ -91,7 +91,7 @@ export default function CertificatePage({ params }: CertificateProps) {
 
   if (isLoading || !cert) {
     return (
-      <div className="container mx-auto px-4 py-20 text-center space-y-4">
+      <div className="container py-20 text-center space-y-4">
         <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
         <p className="text-sm text-muted-foreground">Generating certificate preview...</p>
       </div>
@@ -99,7 +99,7 @@ export default function CertificatePage({ params }: CertificateProps) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-5xl space-y-8">
+    <div className="container py-10 max-w-5xl space-y-8">
       {/* Top Controls */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>

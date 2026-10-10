@@ -41,7 +41,7 @@ export default function NotificationPreferencesPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-3xl space-y-8">
+    <div className="container py-10 max-w-3xl space-y-8">
       <div>
         <Button asChild variant="ghost" size="sm" className="mb-2 text-xs gap-1">
           <Link href="/notifications">

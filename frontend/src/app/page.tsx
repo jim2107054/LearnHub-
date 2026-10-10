@@ -39,7 +39,7 @@ export default async function HomePage() {
     <div className="flex flex-col gap-16 pb-20">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-primary/10 via-background to-background py-20 md:py-28 border-b">
-        <div className="container mx-auto px-4 text-center max-w-4xl">
+        <div className="container text-center max-w-4xl">
           <div className="inline-flex items-center gap-2 rounded-full border bg-background/80 px-4 py-1.5 text-xs font-medium backdrop-blur shadow-sm mb-6">
             <Sparkles className="h-3.5 w-3.5 text-primary" />
             <span>Over 10,000+ verified video lectures and hands-on projects</span>
@@ -98,7 +98,7 @@ export default async function HomePage() {
       </section>
 
       {/* Categories Grid */}
-      <section className="container mx-auto px-4">
+      <section className="container">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-2xl font-bold tracking-tight">Top Learning Categories</h2>
@@ -126,7 +126,7 @@ export default async function HomePage() {
       </section>
 
       {/* Featured Courses Showcase */}
-      <section className="container mx-auto px-4">
+      <section className="container">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-2xl font-bold tracking-tight">Featured & Bestselling Courses</h2>
@@ -152,7 +152,7 @@ export default async function HomePage() {
       </section>
 
       {/* Instructor CTA Banner */}
-      <section className="container mx-auto px-4">
+      <section className="container">
         <div className="rounded-2xl bg-gradient-to-r from-primary via-purple-700 to-indigo-800 p-8 md:p-12 text-white flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
           <div className="max-w-xl">
             <h2 className="text-2xl md:text-3xl font-extrabold mb-3">Become an Instructor on LearnHub</h2>

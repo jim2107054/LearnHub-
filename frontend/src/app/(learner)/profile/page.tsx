@@ -121,7 +121,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-5xl">
+    <div className="container py-10 max-w-5xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">Account & Settings</h1>
         <p className="text-muted-foreground text-sm">Manage your profile, security credentials, and data privacy</p>

@@ -71,7 +71,7 @@ export default async function PublicCertificateVerificationPage({ params }: Veri
   const isValid = cert?.status === 'valid';
 
   return (
-    <div className="container mx-auto flex min-h-[80vh] items-center justify-center px-4 py-12">
+    <div className="container flex min-h-[80vh] items-center justify-center py-12">
       <Card className="w-full max-w-lg shadow-2xl border-border text-center overflow-hidden">
         <div className={`h-2.5 ${isValid ? 'bg-emerald-500' : 'bg-destructive'}`} />
 

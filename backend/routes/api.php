@@ -1,5 +1,12 @@
 <?php
 
+use App\Domain\Admin\Http\Controllers\AnalyticsController;
+use App\Domain\Admin\Http\Controllers\AuditLogController;
+use App\Domain\Admin\Http\Controllers\CourseModerationController;
+use App\Domain\Admin\Http\Controllers\DmcaController;
+use App\Domain\Admin\Http\Controllers\ModerationQueueController;
+use App\Domain\Admin\Http\Controllers\SettingsController;
+use App\Domain\Admin\Http\Controllers\UserManagementController;
 use App\Domain\Assessment\Http\Controllers\AssessmentController;
 use App\Domain\Catalog\Http\Controllers\CatalogController;
 use App\Domain\Catalog\Http\Controllers\CategoryController;
@@ -126,6 +133,8 @@ Route::prefix('v1')->group(function () {
     Route::get('/courses/{courseSlug}/qa', [QaController::class, 'questions']);
     Route::get('/qa/questions/{questionUlid}/answers', [QaController::class, 'answers']);
 
+    Route::post('/analytics/events', [AnalyticsController::class, 'ingest']);
+
     // -------------------------------------------------------------------------
     // Authenticated Endpoints (Sanctum)
     // -------------------------------------------------------------------------
@@ -196,6 +205,9 @@ Route::prefix('v1')->group(function () {
             Route::delete('/payout-methods/{ulid}', [PayoutMethodController::class, 'destroy']);
             Route::get('/tax-profile', [TaxProfileController::class, 'show']);
             Route::post('/tax-profile', [TaxProfileController::class, 'store']);
+
+            // Phase 9: Instructor Analytics (ANL-01)
+            Route::get('/analytics', [AnalyticsController::class, 'instructorAnalytics']);
         });
 
         // ---------------------------------------------------------------------
@@ -290,6 +302,51 @@ Route::prefix('v1')->group(function () {
             Route::post('/payout-batches/{batchUlid}/approve', [AdminFinanceController::class, 'approveBatch']);
             Route::post('/earnings/{earningUlid}/hold', [AdminFinanceController::class, 'holdEarning']);
             Route::post('/earnings/{earningUlid}/release', [AdminFinanceController::class, 'releaseEarning']);
+        });
+
+        // ---------------------------------------------------------------------
+        // Phase 9: Admin, Moderation, and Analytics (ADM-*, ANL-*)
+        // ---------------------------------------------------------------------
+        Route::prefix('admin')->group(function () {
+            // User Management (ADM-01)
+            Route::prefix('users')->group(function () {
+                Route::get('/', [UserManagementController::class, 'index']);
+                Route::post('/{ulid}/suspend', [UserManagementController::class, 'suspend']);
+                Route::post('/{ulid}/ban', [UserManagementController::class, 'ban']);
+                Route::post('/{ulid}/impersonate', [UserManagementController::class, 'impersonate']);
+                Route::delete('/{ulid}', [UserManagementController::class, 'destroy']);
+            });
+
+            // Course & Content Moderation (ADM-02, ADM-03)
+            Route::prefix('moderation')->group(function () {
+                Route::get('/courses', [CourseModerationController::class, 'index']);
+                Route::post('/courses/{submissionUlid}', [CourseModerationController::class, 'moderate']);
+                Route::get('/reports', [ModerationQueueController::class, 'index']);
+                Route::post('/reports/{reportUlid}/resolve', [ModerationQueueController::class, 'resolve']);
+            });
+
+            // Settings & Feature Flags (ADM-05)
+            Route::prefix('settings')->group(function () {
+                Route::get('/', [SettingsController::class, 'index']);
+                Route::post('/', [SettingsController::class, 'update']);
+                Route::post('/flags/{key}', [SettingsController::class, 'updateFeatureFlag']);
+            });
+
+            // DMCA Copyright Protection (ADM-08, BR-08)
+            Route::prefix('dmca')->group(function () {
+                Route::get('/', [DmcaController::class, 'index']);
+                Route::post('/', [DmcaController::class, 'store']);
+                Route::post('/{noticeUlid}/strike', [DmcaController::class, 'issueStrike']);
+            });
+
+            // Audit Logs (ADM-09)
+            Route::get('/audit-logs', [AuditLogController::class, 'index']);
+
+            // Analytics & KPIs (ADM-10, ANL-04)
+            Route::prefix('analytics')->group(function () {
+                Route::get('/kpis', [AnalyticsController::class, 'adminKpis']);
+                Route::get('/export/courses', [AnalyticsController::class, 'exportCsv']);
+            });
         });
     });
 });
